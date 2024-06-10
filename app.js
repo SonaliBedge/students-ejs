@@ -3,14 +3,15 @@ const express = require("express");
 require("express-async-errors");
 
 const app = express();
+const cookieParser = require("cookie-parser");
+const csrf = require('host-csrf')  //csrf-1
 app.use(express.urlencoded({ extended: true }));
 require("dotenv").config(); // to load the .env file into the process.env object
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const url = process.env.MONGO_URI;
 
-const store = new MongoDBStore({
-  // may throw an error, which won't be caught
+const store = new MongoDBStore({  
   uri: url,
   collection: "mySessions",
 });
@@ -25,11 +26,14 @@ const sessionParms = {
   store: store,
   cookie: { secure: false, sameSite: "strict" },
 };
+let csrf_development_mode = true;
 
 if (app.get("env") === "production") {
   app.set("trust proxy", 1); // trust first proxy
+  csrf_development_mode = false;  //csrf 
   sessionParms.cookie.secure = true; // serve secure cookies
 }
+
 // app.use(bodyParser.json());
 app.use(session(sessionParms));
 const passport = require("passport");
@@ -38,6 +42,18 @@ const passportInit = require("./passport/passportInit");
 passportInit();
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+//csrf
+const csrf_options = {
+  protected_operations: ["POST"],
+  protected_content_types: ["application/json"],
+  development_mode: csrf_development_mode,
+  cookieParser: cookieParser,  
+  cookieSecret: process.env.COOKIE_SECRET,
+};
+
+const csrf_middleware = csrf(csrf_options); 
 
 app.use(require("connect-flash")());
 
@@ -50,9 +66,15 @@ app.use("/sessions", require("./routes/sessionRoutes"));
 app.set("view engine", "ejs");
 app.use(require("body-parser").urlencoded({ extended: true }));
 
+app.use(cookieParser('www'));
+
 const auth = require("./middleware/auth");
 const secretWordRouter = require("./routes/secretWord");
-app.use("/secretWord", auth, secretWordRouter);
+app.use((req, res, next) => {  
+  res.locals._csrf = req.cookies.csrfToken;
+  next();
+});
+app.use("/secretWord", auth, csrf_middleware,secretWordRouter);
 
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
