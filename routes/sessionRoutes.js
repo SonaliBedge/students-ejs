@@ -18,7 +18,14 @@ router
       successRedirect: "/",
       failureRedirect: "/sessions/logon",
       failureFlash: true,
-    })
+    }),
+    (req, res) => {
+      // CSRF token refresh
+      csrf.refresh(req, res); // Refresh CSRF token
+
+      // Redirect to the success route
+      res.redirect("/");
+    }
     // (req, res) => {
     //   res.send("Not yet implemented.");
     // }
