@@ -65,7 +65,7 @@ app.use("/sessions", require("./routes/sessionRoutes"));
 
 app.set("view engine", "ejs");
 app.use(require("body-parser").urlencoded({ extended: true }));
-
+// process.env.SESSION_SECRET
 app.use(cookieParser('www'));
 
 const auth = require("./middleware/auth");
@@ -89,7 +89,12 @@ const port = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    await require("./db/connect")(process.env.MONGO_URI);
+    let mongoURL = process.env.MONGO_URI
+    if (process.env.NODE_ENV == "test") {
+      mongoURL = process.env.MONGO_URI_TEST
+    }
+    await require("./db/connect")(mongoURL);
+    // await require("./db/connect")(process.env.MONGO_URI);
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
