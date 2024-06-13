@@ -61,21 +61,24 @@ app.use(require("./middleware/storeLocals"));
 app.get("/", (req, res) => {
   res.render("index");
 });
+
 app.use("/sessions", require("./routes/sessionRoutes"));
 
 app.set("view engine", "ejs");
 app.use(require("body-parser").urlencoded({ extended: true }));
 
 app.use(cookieParser('www'));
-
+const students = require("./routes/students")
 const auth = require("./middleware/auth");
 const secretWordRouter = require("./routes/secretWord");
+
 app.use((req, res, next) => {  
   res.locals._csrf = req.cookies.csrfToken;
   next();
 });
 app.use("/secretWord", auth, csrf_middleware,secretWordRouter);
-
+app.use("/students",auth,students)
+// app.use("/students", students)
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
 });

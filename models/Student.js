@@ -12,15 +12,9 @@ const StudentSchema = new mongoose.Schema(
       require: [true, "Please provide grade level"],
       maxlength: 50,
     },
-    // Grade: {
-    //     type: Number,
-    //     require: [true, "Please provide grade level"],
-    // enum = ['1','2','3','4','5','6','7','8']
-    //     maxlength: 2,
-    //   },
     Subject: {
       type: String,
-      enum: ["English", "Mathametics", "Science", "History", "Computer","All"],
+      enum: ["English", "Mathametics", "Science", "History", "Computer", "All"],
       default: "All",
     },
     createdBy: {
