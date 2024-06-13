@@ -14,7 +14,6 @@ const getStudents = async (req, res) => {
 };
 
 const addNewStudent = (req, res) => {
-  console.log("new entry");
   res.render("student", {
     title: "Add Student",
     action: "/students",
@@ -25,16 +24,13 @@ const addNewStudent = (req, res) => {
 
 const createNewStudent = async (req, res) => {
   try {
-    // console.log("new entry", req.body);
     const { SchoolName, Grade, Subject } = req.body;
-    // Assuming Student is your Mongoose model
     const newStudent = await Student.create({
       SchoolName,
       Grade,
       Subject,
-      createdBy: req.user._id, // Assuming you're storing the user who created the student
+      createdBy: req.user._id,
     });
-    // console.log("New student created:", newStudent);
     res.redirect("/students"); // Redirect to the students list page or any other page
   } catch (err) {
     console.error("Error creating new student:", err);
@@ -51,13 +47,10 @@ const getStudentEntry = async (req, res) => {
     });
     res.render("student", {
       title: "Edit Student",
-      //   action: `/students/${student.id}/edit`,
-      action: `/students`,
+      action: `/students/${student.id}`,
       submitButtonLabel: "Update",
       student: student,
     });
-    // console.log("updateing new");
-    // res.render("students", { student });
   } catch (err) {
     req.flash("error", "Error fetching student.");
     res.redirect("/students");
@@ -66,8 +59,6 @@ const getStudentEntry = async (req, res) => {
 
 const updateStudentEntry = async (req, res) => {
   try {
-    // console.log("updateing");
-
     const student = await Student.findOne({
       _id: req.params.id,
       createdBy: req.user._id,
@@ -76,10 +67,9 @@ const updateStudentEntry = async (req, res) => {
       req.flash("error", "Student not found.");
       return res.redirect("/students");
     }
-    // console.log("updated data", req.body);
     Object.assign(student, req.body);
     await student.save();
-    res.redirect(`/students/${student._id}`);
+    res.redirect(`/students`);
   } catch (err) {
     if (err.constructor.name === "ValidationError") {
       parseVErr(err, req);
