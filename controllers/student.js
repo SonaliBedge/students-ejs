@@ -1,5 +1,3 @@
-
-
 const Student = require("../models/Student.js");
 const parseVErr = require("../utils/parseValidationErrs.js");
 
@@ -16,21 +14,32 @@ const getStudents = async (req, res) => {
 };
 
 const addNewStudent = (req, res) => {
-  res.render("students");
+  console.log("new entry");
+  res.render("student", {
+    title: "Add Student",
+    action: "/students",
+    submitButtonLabel: "Add",
+    student: null,
+  });
 };
 
 const createNewStudent = async (req, res) => {
-  const newStudent = new Student({ ...req.body, createdBy: req.user._id });
   try {
-    await newStudent.save();
-    res.redirect("/students");
+    // console.log("new entry", req.body);
+    const { SchoolName, Grade, Subject } = req.body;
+    // Assuming Student is your Mongoose model
+    const newStudent = await Student.create({
+      SchoolName,
+      Grade,
+      Subject,
+      createdBy: req.user._id, // Assuming you're storing the user who created the student
+    });
+    // console.log("New student created:", newStudent);
+    res.redirect("/students"); // Redirect to the students list page or any other page
   } catch (err) {
-    if (err.constructor.name === "ValidationError") {
-      parseVErr(err, req);
-    } else {
-      req.flash("error", "Error creating student.");
-    }
-    res.render("student", { student: newStudent, errors: req.flash("error") });
+    console.error("Error creating new student:", err);
+    req.flash("error", "Error creating new student.");
+    res.redirect("/students"); // Redirect to an error page or any other page
   }
 };
 
@@ -40,7 +49,15 @@ const getStudentEntry = async (req, res) => {
       _id: req.params.id,
       createdBy: req.user._id,
     });
-    res.render("students", { student });
+    res.render("student", {
+      title: "Edit Student",
+      //   action: `/students/${student.id}/edit`,
+      action: `/students`,
+      submitButtonLabel: "Update",
+      student: student,
+    });
+    // console.log("updateing new");
+    // res.render("students", { student });
   } catch (err) {
     req.flash("error", "Error fetching student.");
     res.redirect("/students");
@@ -49,13 +66,20 @@ const getStudentEntry = async (req, res) => {
 
 const updateStudentEntry = async (req, res) => {
   try {
+    // console.log("updateing");
+
     const student = await Student.findOne({
       _id: req.params.id,
       createdBy: req.user._id,
     });
+    if (!student) {
+      req.flash("error", "Student not found.");
+      return res.redirect("/students");
+    }
+    // console.log("updated data", req.body);
     Object.assign(student, req.body);
     await student.save();
-    res.redirect("/students");
+    res.redirect(`/students/${student._id}`);
   } catch (err) {
     if (err.constructor.name === "ValidationError") {
       parseVErr(err, req);

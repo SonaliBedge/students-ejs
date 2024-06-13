@@ -2,6 +2,7 @@
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 <h2>Students List</h2>
+
     <table id="students-table">
       <tr id="students-table-header">
         <th>School Name</th>
@@ -16,11 +17,9 @@
             <td><%= student.Grade %></td>
             <td><%= student.Subject %></td>
             <td>
-              <!-- <a href="<%= students ? '/students/edit/' + student.id : '/students' %>">
-                <button type="button"><%= student ? 'Edit' : 'Add' %></button>
-              </a> -->
               <a href="/students/edit/<%= student.id %>">
-                <button type="button">edit</button></a>
+                <button type="button">edit</button>
+              </a>              
               </td>
             <td><form method="POST" action="/students/delete/<%= student.id %>">
                 <button type="submit">delete</button>
@@ -29,4 +28,8 @@
         <% }) %>
       <% } %>
     </table>
+    <!-- <form method="POST" action="/students/new">
+      <button type="submit">Add New</button>
+    </form> -->
+    <a href="/students/new"><button type="button">Add New</button></a>
 <%- include("partials/footer.ejs") %>

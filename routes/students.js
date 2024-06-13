@@ -13,22 +13,17 @@ const {
 
 // Get all students
 router.get("/", getStudents);
-// router.get("/", async (req, res) => {
-//   try {
-//     const students = await getStudents(); // Call the getStudents function to fetch students
-//     res.render("/", { students }); // Pass fetched students to the view
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send("Error fetching students");
-//   }
-// });
+
 router.get("/new", addNewStudent);
 
-router.post("/students", createNewStudent);
+router.post("/", createNewStudent);
 
+// router.get("/students/:id/edit", getStudentEntry);
 router.get("/edit/:id", getStudentEntry);
-
-router.post("/edit/:id", updateStudentEntry);
+// console.log("updateing")
+router.post("/:id", updateStudentEntry);
+// router.post("/:id/edit", updateStudentEntry);
+// router.post("students/edit/:id", updateStudentEntry);
 
 router.post("/delete/:id", deleteStudent); // Use :id in the route to capture the student ID
 
