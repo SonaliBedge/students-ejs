@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "test": "NODE_ENV=test mocha test/*.js --exit"
   },
   "author": "",
   "license": "ISC",
@@ -26,5 +27,13 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "chai": "^5.1.1",
+    "chai-http": "^5.0.0",
+    "factory-bot": "^6.3.1",
+    "mocha": "^10.4.0",
+    "puppeteer": "^22.10.1"
   }
 }
