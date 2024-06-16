@@ -64,13 +64,21 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.use("/sessions", require("./routes/sessionRoutes"));
-
+app.get("/multiply", (req,res)=> {
+  const result = req.query.first * req.query.second
+  if (result.isNaN) {
+    result = "NaN"
+  } else if (result == null) {
+    result = "null"
+  }
+  res.json({result: result})
+})
 app.set("view engine", "ejs");
 app.use(require("body-parser").urlencoded({ extended: true }));
 
 app.use(cookieParser("www"));
 const students = require("./routes/students");
+
 const auth = require("./middleware/auth");
 const secretWordRouter = require("./routes/secretWord");
 
@@ -78,9 +86,22 @@ app.use((req, res, next) => {
   res.locals._csrf = req.cookies.csrfToken;
   next();
 });
+app.use("/sessions", require("./routes/sessionRoutes"),csrf_middleware);
+
 app.use("/secretWord", auth, csrf_middleware, secretWordRouter);
 app.use("/students", auth, students);
 // app.use("/students", students)
+app.use("/", require("./routes/sessionRoutes"))
+// app.use("/privacy")
+app.use((req,res,next)=> {
+  if (req.path == "/multiply") {
+    res.set("Content-Type","application/json")
+  } else {
+    res.set("Content-Type","text/html")
+  }
+  next()
+})
+
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
 });
@@ -92,15 +113,35 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 3000;
 
-const start = async () => {
+// const start = async () => {
+//   try {
+//     let mongoURL = process.env.MONGO_URI
+//     if (process.env.NODE_ENV == "test") {
+//       mongoURL = process.env.MONGO_URI_TEST
+//     }
+//     await require("./db/connect")(mongoURL);
+//     // await require("./db/connect")(process.env.MONGO_URI);
+//     app.listen(port, () =>
+//       console.log(`Server is listening on port ${port}...`)
+//     );
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// start();
+
+const start = () => {
   try {
-    await require("./db/connect")(process.env.MONGO_URI);
-    app.listen(port, () =>
-      console.log(`Server is listening on port ${port}...`)
+    require("./db/connect")(url);
+    return app.listen(port, () =>
+      console.log(`Server is listening on port ${port}...`),
     );
   } catch (error) {
     console.log(error);
   }
 };
 
-start();
+const server = start();
+
+module.exports = { app, server };

@@ -1,8 +1,9 @@
-<h1>The School EJS Application</h1>
+<h1>The Student EJS Application</h1>
 <% if (user) { %>
   <p>User <%= user.name %> is logged on.</p>
   <form method="POST" action="/sessions/logoff">    
   <button>Logoff</button>
+  
   </form>
 <% } %>
 <% if (errors) {

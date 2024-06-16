@@ -1,11 +1,12 @@
 {
-  "name": "jobs-ejs",
+  "name": "students-ejs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ejs",
+  
   "scripts": {
     "start": "nodemon app.js",
-    "test": "NODE_ENV=test mocha test/*.js --exit"
+    "test": "NODE_ENV=test mocha tests/*.js --exit"
   },
   "author": "",
   "license": "ISC",
@@ -32,6 +33,7 @@
     "@faker-js/faker": "^8.4.1",
     "chai": "^5.1.1",
     "chai-http": "^5.0.0",
+    "esm": "^3.2.25",
     "factory-bot": "^6.3.1",
     "mocha": "^10.4.0",
     "puppeteer": "^22.11.0"

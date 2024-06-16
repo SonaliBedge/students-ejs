@@ -24,8 +24,9 @@ const addNewStudent = (req, res) => {
 
 const createNewStudent = async (req, res) => {
   try {
-    const { SchoolName, Grade, Subject } = req.body;
+    const { StudentName, SchoolName, Grade, Subject } = req.body;
     const newStudent = await Student.create({
+      StudentName,
       SchoolName,
       Grade,
       Subject,

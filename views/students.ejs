@@ -5,6 +5,7 @@
 
     <table id="students-table"  style="margin: auto; vertical-align: middle;">
       <tr id="students-table-header">
+        <th>Student Name</th>
         <th>School Name</th>
         <th>Grade</th>
         <th>Subject</th>
@@ -13,6 +14,7 @@
       <% if (students && students.length) { %>
         <% students.forEach((student) => { %>
           <tr>
+            <td><%= student.StudentName %></td>
             <td><%= student.SchoolName %></td>
             <td><%= student.Grade %></td>
             <td><%= student.Subject %></td>
@@ -21,12 +23,14 @@
                 <button type="button">edit</button>
               </a>              
               </td>
-            <td><form method="POST" action="/students/delete/<%= student.id %>">
-                <button type="submit">delete</button>
+            <td><form class="form-button" method="POST" action="/students/delete/<%= student.id %>">
+                <button class="form-button" type="submit">delete</button>
               </form></td>
           </tr>
         <% }) %>
       <% } %>
     </table>    
     <a href="/students/new"><button type="button">Add New</button></a>
+    <a href="/">
+      <button type="button">Cancel</button></a>
 <%- include("partials/footer.ejs") %>

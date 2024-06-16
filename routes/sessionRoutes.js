@@ -7,6 +7,8 @@ const {
   registerShow,
   registerDo,
   logoff,
+  termsShow,
+  privacyShow,
 } = require("../controllers/sessionController");
 
 router.route("/register").get(registerShow).post(registerDo);
@@ -31,5 +33,8 @@ router
     // }
   );
 router.route("/logoff").post(logoff);
-
+router.route("/terms").get(termsShow).post(termsShow);
+router.route("/privacy").get(privacyShow).post(privacyShow);
+// termsShow,
+// privacyShow,
 module.exports = router;

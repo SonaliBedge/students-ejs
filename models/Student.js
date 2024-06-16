@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const StudentSchema = new mongoose.Schema(
   {
+    StudentName: {
+      type: String,
+      require: [true, "Please provide student name"],
+      maxlength: 200,
+    },
     SchoolName: {
       type: String,
       require: [true, "Please provide school name"],

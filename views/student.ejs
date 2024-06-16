@@ -2,6 +2,10 @@
 <%- include("partials/header.ejs") %>
 <h2><%= title %></h2>
 <form method="POST" action="<%= action %>">
+  
+  <label for="studentName">Student Name:</label>
+  <input type="text" id="studentName" name="StudentName" value="<%= student ? student.StudentName : '' %>"><br>
+  
   <label for="schoolName">School Name:</label>
   <input type="text" id="schoolName" name="SchoolName" value="<%= student ? student.SchoolName : '' %>"><br>
 
@@ -9,11 +13,24 @@
   <input type="text" id="grade" name="Grade" value="<%= student ? student.Grade : '' %>"><br>
 
   <label for="subject">Subject:</label>
-  <input type="text" id="subject" name="Subject" value="<%= student ? student.Subject : '' %>"><br>
+  <select id="subject" name="Subject">
+    <!-- Mathametics -->
+    <option value="">Select a subject</option>
+    <option value="English" <%= student && student.Subject === 'English' ? 'selected' : '' %>>English</option>
+    <option value="Mathametics" <%= student && student.Subject === 'Mathametics' ? 'selected' : '' %>>Mathametics</option>
+    <option value="Science" <%= student && student.Subject === 'Science' ? 'selected' : '' %>>Science</option>
+    <option value="History" <%= student && student.Subject === 'History' ? 'selected' : '' %>>History</option>    
+    <option value="Computer" <%= student && student.Subject === 'Computer' ? 'selected' : '' %>>Computer</option>
+    <option value="All" <%= student && student.Subject === 'All' ? 'selected' : '' %>>All</option>
+    <!-- Add more options as needed -->
+  </select><br>
+  <!-- <input type="text" id="subject" name="Subject" value="<%= student ? student.Subject : '' %>"><br> -->
   <% if (student) { %>
     <!-- If editing an existing student, include the student's ID in a hidden input field -->
     <input type="hidden" name="id" value="<%= student._id %>">
   <% } %>
   <button type="submit"><%= submitButtonLabel %></button>
+  <a href="/">
+  <button type="button">Cancel</button></a>
 </form>
 <%- include("partials/footer.ejs") %>
