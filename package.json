@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ejs",
-  
   "scripts": {
     "start": "nodemon app.js",
-    "test": "NODE_ENV=test mocha tests/*.js --exit"
+    "test": "NODE_ENV=test mocha tests/*.mjs --exit"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +26,7 @@
     "mongoose": "^8.3.5",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "save-dev": "^0.0.1-security",
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
