@@ -5,14 +5,14 @@
   
   <label for="teacherName">Teacher Name:</label>
   <input type="text" id="teacherName" name="TeacherName" value="<%= teacher ? teacher.TeacherName : '' %>"><br>
-  
+
   <label for="qualification">Qualification:</label>
-  <select id="qualification" name="qualification">
+  <select id="qualification" name="TeacherQualification">
     <!-- Mathametics -->
     <option value="">Select a Qualification</option>
-    <option value="Under_Graduation" <%= teacher && teacher.TeacherQualification === 'Under_Graduation' ? 'selected' : '' %>>Under Graduation</option>
+    <option value="Under Graduation" <%= teacher && teacher.TeacherQualification === 'Under Graduation' ? 'selected' : '' %>>Under Graduation</option>
     <option value="Graduation" <%= teacher && teacher.TeacherQualification === 'Graduation' ? 'selected' : '' %>>Graduation</option>
-    <option value="Post_Graduation" <%= teacher && teacher.TeacherQualification === 'Post_Graduation' ? 'selected' : '' %>>Post Graduation</option>
+    <option value="Post Graduation" <%= teacher && teacher.TeacherQualification === 'Post Graduation' ? 'selected' : '' %>>Post Graduation</option>
     
     <!-- Add more options as needed -->
   </select><br>
