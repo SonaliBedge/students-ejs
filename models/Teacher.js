@@ -10,7 +10,7 @@ const TeacherSchema = new mongoose.Schema(
     TeacherQualification: {
       type: String,
       require: [true, "Please provide teacher Qualification"],
-      enum: ["Under Graduation", "Graduation", "Post Graduation"],
+      enum: ["Under_Graduation", "Graduation", "Post_Graduation"],
       default: "Graduation",
     },
 

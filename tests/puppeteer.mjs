@@ -1,9 +1,7 @@
 import { app, server } from "../app.js";
 import { testUserPassword, seed_db } from "../utils/seed_db.js";
-// import { puppeteer } from "puppeteer.mjs"
-// const puppeteer = require("puppeteer");
-// const { server } = require("../app");
-// const { seed_db, testUserPassword } = require("../utils/seed_db");
+import  puppeteer  from "puppeteer"
+
 
 let testUser = null;
 

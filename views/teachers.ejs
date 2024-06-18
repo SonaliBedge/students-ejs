@@ -1,0 +1,35 @@
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<h2>Teachers List</h2>
+
+    <table id="teachers-table"  style="margin: auto; vertical-align: middle;">
+      <tr id="teachers-table-header">
+        <th>Teacher Name  </th>
+        <th>Teacher Qualification  </th>        
+        <th>Subject  </th>
+        <th colspan="2"></th>
+      </tr>
+      <% if (teachers && teachers.length) { %>
+        <% teachers.forEach((teacher) => { %>
+          <tr>
+            <td><%= teacher.TeacherName %></td>
+            <!-- <td><%= teacher.SchoolName %></td> -->
+            <td><%= teacher.TeacherQualification %></td>
+            <td><%= teacher.Subject %></td>
+            <td>
+              <a href="/teachers/edit/<%= teacher.id %>">
+                <button type="button">edit</button>
+              </a>              
+              </td>
+            <td><form class="form-button" method="POST" action="/teachers/delete/<%= teacher.id %>">
+                <button class="form-button" type="submit">delete</button>
+              </form></td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </table>    
+    <a href="/teachers/new"><button type="button">Add New</button></a>
+    <a href="/">
+      <button type="button">Cancel</button></a>
+<%- include("partials/footer.ejs") %>

@@ -12,6 +12,12 @@ const termsShow = (req, res) => {
 const privacyShow = (req, res) => {
   res.render("privacy");
 };
+// const studentsData = (req, res) => {
+//   res.render("students");
+// };
+// const teachersData = (req, res) => {
+//   res.render("teachers");
+// };
 const registerDo = async (req, res, next) => {
   if (req.body.password != req.body.password1) {
     req.flash("error", "The passwords entered do not match.");
@@ -54,4 +60,6 @@ module.exports = {
   logonShow,
   termsShow,
   privacyShow,
+  // studentsData,
+  // teachersData,
 };

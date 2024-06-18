@@ -9,6 +9,8 @@ const {
   logoff,
   termsShow,
   privacyShow,
+  // studentsData,
+  // teachersData,
 } = require("../controllers/sessionController");
 
 router.route("/register").get(registerShow).post(registerDo);
@@ -35,6 +37,8 @@ router
 router.route("/logoff").post(logoff);
 router.route("/terms").get(termsShow).post(termsShow);
 router.route("/privacy").get(privacyShow).post(privacyShow);
+// router.route("/students").get(studentsData).post(studentsData);
+// router.route("/teachers").get(teachersData).post(teachersData);
 // termsShow,
 // privacyShow,
 module.exports = router;
