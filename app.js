@@ -12,7 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 require("dotenv").config(); // to load the .env file into the process.env object
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const url = process.env.MONGO_URI;
+let url = process.env.MONGO_URI;
+if (process.env.NODE_ENV == "test") {
+  url = process.env.MONGO_URI_TEST;
+}
 
 const store = new MongoDBStore({
   uri: url,
@@ -85,6 +88,8 @@ app.use(require("body-parser").urlencoded({ extended: true }));
 app.use(cookieParser("www"));
 const students = require("./routes/students");
 const teachers = require("./routes/teachers");
+const books = require("./routes/books");
+
 
 const auth = require("./middleware/auth");
 const secretWordRouter = require("./routes/secretWord");
@@ -106,6 +111,7 @@ app.use("/sessions", require("./routes/sessionRoutes"), csrf_middleware);
 app.use("/secretWord", auth, csrf_middleware, secretWordRouter);
 app.use("/students", auth, students);
 app.use("/teachers", auth, teachers);
+app.use("/books", auth, books);
 app.use("/", require("./routes/sessionRoutes"));
 // app.use("/privacy")
 
@@ -126,6 +132,7 @@ const port = process.env.PORT || 3000;
 //     if (process.env.NODE_ENV == "test") {
 //       mongoURL = process.env.MONGO_URI_TEST
 //     }
+//     console.log(mongoURL);
 //     await require("./db/connect")(mongoURL);
 //     // await require("./db/connect")(process.env.MONGO_URI);
 //     app.listen(port, () =>

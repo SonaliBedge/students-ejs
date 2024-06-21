@@ -9,8 +9,27 @@
   <label for="schoolName">School Name:</label>
   <input type="text" id="schoolName" name="SchoolName" value="<%= student ? student.SchoolName : '' %>"><br>
 
-  <label for="grade">Grade:</label>
-  <input type="text" id="grade" name="Grade" value="<%= student ? student.Grade : '' %>"><br>
+  <label for="grade">Select a Grade:</label>
+  <!-- enum: ["Kindergarten","1 grade", "2 grade", "3 grade", "4 grade", "5 grade", "6 grade","7 grade","8 grade","9 grade","10 grade","11 grade","12 grade"], -->
+  <select id="grade" name="Grade">
+    <!-- Mathametics -->
+    <option value="">Select a grade</option>
+    <option value="Kindergarten" <%= student && student.Grade === 'Kindergarten' ? 'selected' : '' %>>Kindergarten</option>
+    <option value="1 grade" <%= student && student.Grade === '1 grade' ? 'selected' : '' %>>1 grade</option>
+    <option value="2 grade" <%= student && student.Grade === '2 grade' ? 'selected' : '' %>>2 grade</option>
+    <option value="3 grade" <%= student && student.Grade === '3 grade' ? 'selected' : '' %>>3 grade</option>    
+    <option value="4 grade" <%= student && student.Grade === '4 grade' ? 'selected' : '' %>>4 grade</option>
+    <option value="5 grade" <%= student && student.Grade === '5 grade' ? 'selected' : '' %>>5 grade</option>
+    <option value="6 grade" <%= student && student.Grade === '6 grade' ? 'selected' : '' %>>6 grade</option>
+    <option value="7 grade" <%= student && student.Grade === '7 grade' ? 'selected' : '' %>>7 grade</option>
+    <option value="8 grade" <%= student && student.Grade === '8 grade' ? 'selected' : '' %>>8 grade</option>    
+    <option value="9 grade" <%= student && student.Grade === '9 grade' ? 'selected' : '' %>>9 grade</option>
+    <option value="10 grade" <%= student && student.Grade === '10 grade' ? 'selected' : '' %>>10 grade</option>
+    <option value="11 grade" <%= student && student.Grade === '11 grade' ? 'selected' : '' %>>11 grade</option>
+    <option value="12 grade" <%= student && student.Grade === '12 grade' ? 'selected' : '' %>>12 grade</option>
+    <!-- Add more options as needed -->
+  </select><br>
+  <!-- <input type="text" id="grade" name="Grade" value="<%= student ? student.Grade : '' %>"><br> -->
 
   <label for="subject">Subject:</label>
   <select id="subject" name="Subject">

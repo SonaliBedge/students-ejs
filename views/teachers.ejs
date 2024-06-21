@@ -3,8 +3,8 @@
 <%- include("partials/header.ejs") %>
 <h2>Teachers List</h2>
 
-    <table id="teachers-table"  style="margin: auto; vertical-align: middle;">
-      <tr id="teachers-table-header">
+    <table id="teachers-table" class="table" style="margin: auto; vertical-align: middle;">
+      <tr id="table-header">
         <th>Teacher Name  </th>
         <th>Teacher Qualification  </th>        
         <th>Subject  </th>
@@ -13,8 +13,7 @@
       <% if (teachers && teachers.length) { %>
         <% teachers.forEach((teacher) => { %>
           <tr>
-            <td><%= teacher.TeacherName %></td>
-            <!-- <td><%= teacher.SchoolName %></td> -->
+            <td><%= teacher.TeacherName %></td>           
             <td><%= teacher.TeacherQualification %></td>
             <td><%= teacher.Subject %></td>
             <td>
@@ -23,13 +22,14 @@
               </a>              
               </td>
             <td><form class="form-button" method="POST" action="/teachers/delete/<%= teacher.id %>">
-                <button class="form-button" type="submit">delete</button>
+                <button class="custom-button" type="submit">delete</button>
               </form></td>
           </tr>
         <% }) %>
       <% } %>
     </table>    
-    <a href="/teachers/new"><button type="button">Add New</button></a>
+    <br /> 
+    <a href="/teachers/new"><button type="button" >Add New</button></a>
     <a href="/">
       <button type="button">Cancel</button></a>
 <%- include("partials/footer.ejs") %>
