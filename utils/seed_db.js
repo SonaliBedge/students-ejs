@@ -12,7 +12,7 @@ factory.define("student", Student, {
   StudentName: () => faker.company.name(),
   SchoolName: () => faker.person.jobTitle(),
   Grade: () =>
-    ["1", "2", "3", "4", "5", "6", "7"][Math.floor(7 * Math.random())], // random one of these
+    ["1 grade", "2 grade", "3 grade", "4 grade", "5 grade", "6 grade", "7 grade"][Math.floor(7 * Math.random())], // random one of these
   Subject: () =>
     ["English", "Mathametics", "Science", "History", "Computer", "All"][
       Math.floor(6 * Math.random())
