@@ -217,205 +217,36 @@ describe("tests for CRUD operations", function () {
       });
   });
 
-  // it("should add a student entry", async  () => {
-  //   const student = factory.build("student");
-  //   const csrfPage = await chai.request.execute(app).get("/students/new");
-  //   // const csrfToken = /_csrf" value="(.*?)"/.exec(csrfPage.text)[1];
-  //   console.log(csrfPage.text);
-  //   // console.log(csrfToken);
-  //   // console.log(student);
-  // //   const dataToPost = {
-  // //     SchoolName : student.SchoolName
-  // //   };
-  // //   const request = chai.request
-  // //     .execute(app)
-  // //     .post("/students")
-  // //     .set("Cookie", this.sessionCookie)
-  // //     .set("content-type", "application/x-www-form-urlencoded")
-  // //     .send()
-      
-  // });
+  it("should add a student entry", async () => {
+    this.student = await factory.build("student");
+    const logonPage = await chai.request.execute(app).get("/sessions/logon"); // Logon to the application
+    const csrfPage = await chai.request.execute(app).get("/students/new");
+    this.csrfToken = /_csrf" value="(.*?)"/.exec(logonPage.text)[1];
+    
+    const dataToPost = {
+      StudentName: this.student.StudentName,
+      SchoolName: this.student.SchoolName,
+      Grade: this.student.Grade,
+      Subject: this.student.Subject,
+      _csrf: this.csrfToken,
+    };
+    const request = await chai.request
+      .execute(app)
+      .post("/students")
+      .set("Cookie", `csrfToken=${this.csrfCookie}` + ";" + this.sessionCookie)
+      .set("content-type", "application/x-www-form-urlencoded")
+      .redirects(0)
+      .send(dataToPost);
+    
+    expect(request).to.have.status(302);
+
+    const addedStudent = await Student.findOne({
+      StudentName: this.student.StudentName,
+      SchoolName: this.student.SchoolName,
+      Grade: this.student.Grade,
+      Subject: this.student.Subject,
+    });
+    // console.log(addedStudent)
+    expect(addedStudent).to.not.be.null;
+  });
 });
-// before(async () => {
-//   const testUser = await seed_db();   // Seed the database
-//   // console.log(testUser)
-//   const logonPage = await chai.request.execute(app).get("/sessions/logon");  // Logon to the application
-//   const csrfToken = /_csrf" value="(.*?)"/.exec(logonPage.text)[1];
-//   const logonResponse = await chai.request
-//     .execute(app)
-//     .post("/sessions/logon")
-//     .set("content-type", "application/x-www-form-urlencoded")
-//     .send({
-//       email: testUser.email,
-//       password: testUserPassword,
-//       _csrf: csrfToken,
-//     });
-
-//     const cookies = logonResponse.headers["set-cookie"];
-//     this.sessionCookie = cookies.find((element) =>
-//       element.startsWith("connect.sid")
-//     );
-//   // this.sessionCookie = logonResponse.headers["set-cookie"]
-//   //   .find((cookie) => cookie.startsWith("connect.sid"))
-//   //   .split(";")[0];
-//   //   // console.log(testUser)
-// });
-
-// it("should get the student list",  (done) => {
-//   // const testUser1 = await seed_db();   // Seed the database
-//   console.log(this.sessionCookie)
-//   chai.request
-//     .execute(app)
-//     .get("/students")
-//     .set("Cookie", this.sessionCookie)
-//     .send()
-//     .end((err, res) => {
-//       expect(res).to.have.status(200);
-//       // console.log(res.text)
-//       done();
-
-//     });
-
-//   // const pageParts = response.text.split("<tr>");
-//   // console.log(pageParts);
-//   // expect(pageParts).to.have.lengthOf(21);
-
-// });
-
-// describe("tests for CRUD operations", function () {
-//     after(() => {
-//     server.close();
-//   });
-
-//   it("should log the user on and get the student list", async ()=> {
-//     // Logon to the application
-//     let testUser = await seed_db();
-//     const logondata = { name : testUser.name,
-//       email: testUser.email,
-//       password : testUserPassword
-//     }
-//     const logonPage = await chai.request.execute(app).get("/sessions/logon").send(logondata);
-
-//     const csrfToken = /_csrf" value="(.*?)"/.exec(logonPage.text)[1];
-//     const cookies = logonPage.headers["set-cookie"];
-//     const sessionCookie = cookies.find((element) =>
-//         element.startsWith("connect.sid")
-//     );
-
-//     const response = await chai.request
-//       .execute(app)
-//       .get("/students")
-//       .set(
-//         "Cookie",
-//         `csrfToken=${this.csrfCookie}` + ";" + this.sessionCookie
-//       )
-//       .set("content-type", "application/x-www-form-urlencoded")
-//     expect(response).to.have.status(200);
-
-//     });
-//   });
-
-//   // console.log(csrfToken);
-//   // console.log(cookies);
-//   // console.log(sessionCookie);
-//     // console.log(this.sessionCookie);
-//     // const logondata = { name : testUser.name,
-//     //           email: testUser.email,
-//     //           password : testUserPassword
-//     //   }
-
-// //     const request = chai.request
-//     .execute(app)
-//     .post("/sessions/logon")
-//     .set(
-//       "Cookie",
-//       `csrfToken=${csrfToken}` + ";" + sessionCookie
-//     )
-//     .set("content-type", "application/x-www-form-urlencoded")
-//     // .redirects(0)
-//     .send(logondata);
-// console.log(request.text)
-// const response = await chai.request
-//   .execute(app)
-//   .post("/students")
-//   .set(
-//     "Cookie",
-//     `csrfToken=${csrfToken}` + ";" + this.sessionCookie
-//   )
-//   .send(logondata);
-// expect(response).to.have.status(200);
-// // console.log(sessionCookie);
-// console.log("data==", response.text);
-// const pageParts = response.text.split("<li>");
-// console.log(pageParts)
-// expect(pageParts).to.have.lengthOf(21);
-// expect(pageParts.length - 1).to.equal(20);
-
-//     const logonResponse = await chai.request
-//       .execute(app)
-//       .post("/sessions/logon")
-//       .set("content-type", "application/x-www-form-urlencoded")
-//       .set("Cookie", `csrfToken=${csrfToken}`)
-//       .send({
-//         name : testUser.name,
-//         email: testUser.email,
-//         password : testUser.password,
-//         // password: testUserPassword,
-//         // password: this.user.Password,
-//         // email: testUser.email,
-//         // password: testUserPassword,
-//         _csrf: csrfToken,
-//       })
-//       .redirects(0);
-//       // console.log(csrfToken)
-//       // console.log(testUserPassword)
-//       // console.log(testUser)
-//       // console.log("logonResponse:", logonPage.text)
-//       const cookies = logonResponse.headers["set-cookie"];
-//       sessionCookie = cookies.find((element) =>
-//         element.startsWith("connect.sid")
-//       );
-//       // console.log(sessionCookie)
-//     // sessionCookie = logonResponse.headers["set-cookie"]
-//       // .find((cookie) => cookie.startsWith("connect.sid"))
-//       // .split(";")[0];
-//       // console.log(sessionCookie)
-//   });
-
-//   it("should get the student list", async () => {
-//     const response = await chai.request
-//       .execute(app)
-//       .get("/students")
-//       .set("Cookie", sessionCookie)
-//       .send();
-//     expect(response).to.have.status(200);
-//     // console.log(sessionCookie);
-//     console.log("data==", response.text);
-//     const pageParts = response.text.split("<li>");
-//     // expect(pageParts).to.have.lengthOf(21);
-//     expect(pageParts.length - 1).to.equal(20);
-//   });
-// });
-//   it("should add a job entry", async () => {
-//     const newStudent = factory.build("student");
-//     const response = await chai.request.execute(app)
-//       .post("/students")
-//       .set("Cookie", sessionCookie)
-//       .set("content-type", "application/x-www-form-urlencoded")
-//       .send({
-//         StudentName: newStudent.StudentName,
-//         SchoolName: newStudent.SchoolName,
-//         Grade: newStudent.Grade,
-//         Subject: newStudent.Subject,
-//         _csrf: csrfToken,
-//       });
-//     expect(response).to.have.status(200);
-//     const addedStudent = await Student.findOne({
-//       StudentName: newStudent.StudentName,
-//       SchoolName: newStudent.SchoolName,
-//       Grade: newStudent.Grade,
-//       Subject: newStudent.Subject,
-//     });
-//     expect(addedStudent).to.not.be.null;
-//   });
-// });
