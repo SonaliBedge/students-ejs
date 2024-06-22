@@ -11,14 +11,15 @@ const {
   deleteTeacher,
 } = require("../controllers/teacher");
 
+const { getSubjectData } = require("../controllers/subject");
 // Get all teachers
 router.get("/", getTeachers);
 
-router.get("/new", addNewTeacher);
+router.get("/new",getSubjectData, addNewTeacher);
 
 router.post("/", createNewTeacher);
 
-router.get("/edit/:id", getTeacherEntry);
+router.get("/edit/:id",getSubjectData, getTeacherEntry);
 
 router.post("/:id", updateTeacherEntry);
 

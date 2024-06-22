@@ -1,0 +1,17 @@
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<h2><%= title %></h2>
+<form method="POST" action="<%= action %>">
+  
+  <label for="subjectName">Subject Name:</label>
+  <input type="text" id="subjectName" name="SubjectName" value="<%= subject ? subject.SubjectName : '' %>"><br> 
+      
+  <% if (subject) { %>
+    <!-- If editing an existing subject, include the subject's ID in a hidden input field -->
+    <input type="hidden" name="id" value="<%= subject._id %>">
+  <% } %>
+  <button type="submit"><%= submitButtonLabel %></button>
+  <a href="/">
+  <button type="button">Cancel</button></a>
+</form>
+<%- include("partials/footer.ejs") %>

@@ -1,0 +1,31 @@
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<h2>Subjects List</h2>
+
+    <table id="subjects-table" class="table"  style="margin: auto; vertical-align: middle;">
+      <tr id="table-header" class="table-header">
+        <th>Subject Name</th>        
+        <th colspan="2"></th>
+      </tr>
+      <% if (subjects && subjects.length) { %>
+        <% subjects.forEach((subject) => { %>
+          <tr>
+            <td><%= subject.SubjectName %></td>           
+            <td>
+              <a href="/subjects/edit/<%= subject.id %>">
+                <button type="button">edit</button>
+              </a>              
+              </td>
+            <td><form class="form-button" method="POST" action="/subjects/delete/<%= subject.id %>">
+                <button class="custom-button" type="submit">delete</button>
+              </form></td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </table>   
+    <br /> 
+    <a href="/subjects/new"><button type="button">Add New</button></a>
+    <a href="/">
+      <button type="button">Cancel</button></a>
+<%- include("partials/footer.ejs") %>

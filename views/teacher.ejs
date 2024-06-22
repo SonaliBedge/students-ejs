@@ -13,21 +13,24 @@
     <option value="Under Graduation" <%= teacher && teacher.TeacherQualification === 'Under Graduation' ? 'selected' : '' %>>Under Graduation</option>
     <option value="Graduation" <%= teacher && teacher.TeacherQualification === 'Graduation' ? 'selected' : '' %>>Graduation</option>
     <option value="Post Graduation" <%= teacher && teacher.TeacherQualification === 'Post Graduation' ? 'selected' : '' %>>Post Graduation</option>
-    
-    <!-- Add more options as needed -->
+       
   </select><br>
   <label for="subject">Subject:</label>
   <select id="subject" name="Subject">
-    <!-- Mathametics -->
+    <option value="">Select a subject</option>
+    <% subjects.forEach(subject => { %>
+      <option value="<%= subject.SubjectName %>" <%= teacher && teacher.Subject === subject.SubjectName ? 'selected' : '' %>><%= subject.SubjectName %></option>
+    <% }) %>
+  </select><br>
+  <!-- <select id="subject" name="Subject">    
     <option value="">Select a subject</option>
     <option value="English" <%= teacher && teacher.Subject === 'English' ? 'selected' : '' %>>English</option>
     <option value="Mathametics" <%= teacher && teacher.Subject === 'Mathametics' ? 'selected' : '' %>>Mathametics</option>
     <option value="Science" <%= teacher && teacher.Subject === 'Science' ? 'selected' : '' %>>Science</option>
     <option value="History" <%= teacher && teacher.Subject === 'History' ? 'selected' : '' %>>History</option>    
     <option value="Computer" <%= teacher && teacher.Subject === 'Computer' ? 'selected' : '' %>>Computer</option>
-    <option value="All" <%= teacher && teacher.Subject === 'All' ? 'selected' : '' %>>All</option>
-    <!-- Add more options as needed -->
-  </select><br>
+    <option value="All" <%= teacher && teacher.Subject === 'All' ? 'selected' : '' %>>All</option>    
+  </select><br> -->
 
   
   <!-- <input type="text" id="subject" name="Subject" value="<%= teacher ? teacher.Subject : '' %>"><br> -->

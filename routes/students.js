@@ -11,14 +11,15 @@ const {
   deleteStudent,
 } = require("../controllers/student");
 
+const { getSubjectData } = require("../controllers/subject");
 // Get all students
 router.get("/", getStudents);
 
-router.get("/new", addNewStudent);
+router.get("/new",getSubjectData, addNewStudent);
 
-router.post("/", createNewStudent);
+router.post("/",  createNewStudent);
 
-router.get("/edit/:id", getStudentEntry);
+router.get("/edit/:id",getSubjectData, getStudentEntry);
 
 router.post("/:id", updateStudentEntry);
 

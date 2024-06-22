@@ -89,7 +89,7 @@ app.use(cookieParser("www"));
 const students = require("./routes/students");
 const teachers = require("./routes/teachers");
 const books = require("./routes/books");
-
+const subjects = require("./routes/subjects");
 
 const auth = require("./middleware/auth");
 const secretWordRouter = require("./routes/secretWord");
@@ -112,6 +112,7 @@ app.use("/secretWord", auth, csrf_middleware, secretWordRouter);
 app.use("/students", auth, students);
 app.use("/teachers", auth, teachers);
 app.use("/books", auth, books);
+app.use("/subjects", auth, subjects);
 app.use("/", require("./routes/sessionRoutes"));
 // app.use("/privacy")
 

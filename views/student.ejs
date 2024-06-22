@@ -9,10 +9,8 @@
   <label for="schoolName">School Name:</label>
   <input type="text" id="schoolName" name="SchoolName" value="<%= student ? student.SchoolName : '' %>"><br>
 
-  <label for="grade">Select a Grade:</label>
-  <!-- enum: ["Kindergarten","1 grade", "2 grade", "3 grade", "4 grade", "5 grade", "6 grade","7 grade","8 grade","9 grade","10 grade","11 grade","12 grade"], -->
-  <select id="grade" name="Grade">
-    <!-- Mathametics -->
+  <label for="grade">Select a Grade:</label>  
+  <select id="grade" name="Grade">    
     <option value="">Select a grade</option>
     <option value="Kindergarten" <%= student && student.Grade === 'Kindergarten' ? 'selected' : '' %>>Kindergarten</option>
     <option value="1 grade" <%= student && student.Grade === '1 grade' ? 'selected' : '' %>>1 grade</option>
@@ -26,14 +24,19 @@
     <option value="9 grade" <%= student && student.Grade === '9 grade' ? 'selected' : '' %>>9 grade</option>
     <option value="10 grade" <%= student && student.Grade === '10 grade' ? 'selected' : '' %>>10 grade</option>
     <option value="11 grade" <%= student && student.Grade === '11 grade' ? 'selected' : '' %>>11 grade</option>
-    <option value="12 grade" <%= student && student.Grade === '12 grade' ? 'selected' : '' %>>12 grade</option>
-    <!-- Add more options as needed -->
-  </select><br>
-  <!-- <input type="text" id="grade" name="Grade" value="<%= student ? student.Grade : '' %>"><br> -->
+    <option value="12 grade" <%= student && student.Grade === '12 grade' ? 'selected' : '' %>>12 grade</option>    
+  </select><br> 
 
   <label for="subject">Subject:</label>
   <select id="subject" name="Subject">
-    <!-- Mathametics -->
+    <option value="">Select a subject</option>
+    <% subjects.forEach(subject => { %>
+      <option value="<%= subject.SubjectName %>" <%= student && student.Subject === subject.SubjectName ? 'selected' : '' %>><%= subject.SubjectName %></option>
+    <% }) %>
+  </select><br>
+
+  <!-- <select id="subject" name="Subject">
+    
     <option value="">Select a subject</option>
     <option value="English" <%= student && student.Subject === 'English' ? 'selected' : '' %>>English</option>
     <option value="Mathametics" <%= student && student.Subject === 'Mathametics' ? 'selected' : '' %>>Mathametics</option>
@@ -41,9 +44,10 @@
     <option value="History" <%= student && student.Subject === 'History' ? 'selected' : '' %>>History</option>    
     <option value="Computer" <%= student && student.Subject === 'Computer' ? 'selected' : '' %>>Computer</option>
     <option value="All" <%= student && student.Subject === 'All' ? 'selected' : '' %>>All</option>
-    <!-- Add more options as needed -->
-  </select><br>
-  <!-- <input type="text" id="subject" name="Subject" value="<%= student ? student.Subject : '' %>"><br> -->
+   
+  </select><br> -->
+
+ 
   <% if (student) { %>
     <!-- If editing an existing student, include the student's ID in a hidden input field -->
     <input type="hidden" name="id" value="<%= student._id %>">
