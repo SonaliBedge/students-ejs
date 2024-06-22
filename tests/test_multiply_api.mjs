@@ -5,8 +5,15 @@ import { factory, seed_db, testUserPassword } from "../utils/seed_db.js";
 import { fakerEN_US as faker } from "@faker-js/faker";
 import User from "../models/User.js";
 import Student from "../models/Student.js";
+// import puppeteer from "puppeteer"
 
 const chai = use(chaiHttp);
+
+// puppeteer.runTests();
+// const browser = await puppeteer.launch();
+// const page = await browser.newPage();
+
+// await page.goto('http://localhost:3000');
 
 //test_multiply_api.mjs
 describe("test multiply api", function () {
@@ -116,6 +123,45 @@ describe("tests for registration and logon", function () {
       expect.fail("Register request failed");
     }
   });
+
+  it("should fail register the same email twice", async () => {
+    try {
+      this.password = faker.internet.password();
+      this.user = await factory.build("user", { password: this.password });
+      const dataToPost = {
+        name: this.user.name,
+        email: this.user.email,
+        password: this.password,
+        password1: this.password,
+        _csrf: this.csrfToken,
+      };
+  
+       // Check if user already exists
+    const existingUser = await User.findOne({ email: this.user.email });
+    if (existingUser) {
+      // User already exists, set flash message and return error response
+      req.flash("error", "That email address is already registered.");
+      return res.status(400).render("register", { errors: req.flash("error") });
+    }
+  
+      const request = chai.request
+        .execute(app)
+        .post("/sessions/register")
+        .set("Cookie", `csrfToken=${this.csrfCookie}`)
+        .set("content-type", "application/x-www-form-urlencoded")
+        .send(dataToPost);
+      const res = await request;
+      expect(res).to.have.status(200);
+      expect(res).to.have.property("text");
+      expect(res.text).to.include("Students List");
+      const newUser = await User.findOne({ email: this.user.email });
+      expect(newUser).to.not.be.null;
+    } catch (err) {
+      console.log(err);
+      expect.fail("Register request failed");
+    }
+  });
+  
 
   it("should log the user on", async () => {
     const dataToPost = {

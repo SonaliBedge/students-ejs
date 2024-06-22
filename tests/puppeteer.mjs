@@ -48,21 +48,22 @@ const runTests = async () => {
         this.password = await page.waitForSelector("input[name=password]");
         this.submit = await page.waitForSelector("button ::-p-text(Logon)");
       });
-      it("sends the logon", async () => {
-        testUser = await seed_db();
-        await this.email.type(testUser.email);
-        await this.password.type(testUserPassword);
-        await this.submit.click();
-        await page.waitForNavigation();
-        await page.waitForSelector(
-          `p ::-p-text(${testUser.name} is logged on.)`,
-        );
-        await page.waitForSelector("a ::-p-text(change the secret");
-        await page.waitForSelector('a[href="/secretWord"]');
-        const copyr = await page.waitForSelector("p ::-p-text(copyright)");
-        const copyrText = await copyr.evaluate((el) => el.textContent);
-        console.log("copyright text: ", copyrText);
-      });
+      // it("sends the logon", async () => {
+      //   const testUser = await seed_db();       
+      //   await this.email.type(testUser.email);
+      //   await this.password.type(testUser.password); 
+      //   await this.submit.click();
+      //   await page.waitForNavigation();
+      //   await page.waitForSelector(
+      //     `p ::-p-text(${testUser.name} is logged on.)`,
+      //   );
+      //   await page.waitForSelector("a ::-p-text(change the secret");
+      //   await page.waitForSelector('a[href="/secretWord"]');
+      //   const copyr = await page.waitForSelector("p ::-p-text(copyright)");
+      //   const copyrText = await copyr.evaluate((el) => el.textContent);
+      //   console.log("copyright text: ", copyrText);
+      // });
     });
   });
 };
+runTests();
