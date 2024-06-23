@@ -1,5 +1,6 @@
 import { app, server } from "../app.js";
 import { testUserPassword, seed_db } from "../utils/seed_db.js";
+// import { factory, seed_db, testUserPassword } from "../utils/seed_db.js";
 import  puppeteer  from "puppeteer"
 
 
@@ -43,26 +44,26 @@ const runTests = async () => {
     describe("logon page test", function () {
       console.log("at line 48", this.outerd, this.innerd, this.secondIt)
       this.timeout(20000);
+
       it("resolves all the fields", async () => {
         this.email = await page.waitForSelector("input[name=email]");
         this.password = await page.waitForSelector("input[name=password]");
         this.submit = await page.waitForSelector("button ::-p-text(Logon)");
       });
-      // it("sends the logon", async () => {
-      //   const testUser = await seed_db();       
-      //   await this.email.type(testUser.email);
-      //   await this.password.type(testUser.password); 
-      //   await this.submit.click();
-      //   await page.waitForNavigation();
-      //   await page.waitForSelector(
-      //     `p ::-p-text(${testUser.name} is logged on.)`,
-      //   );
-      //   await page.waitForSelector("a ::-p-text(change the secret");
-      //   await page.waitForSelector('a[href="/secretWord"]');
-      //   const copyr = await page.waitForSelector("p ::-p-text(copyright)");
-      //   const copyrText = await copyr.evaluate((el) => el.textContent);
-      //   console.log("copyright text: ", copyrText);
-      // });
+
+      it("sends the logon", async () => {
+        const testUser = await seed_db();   
+
+        await this.email.type(testUser.email);
+        await this.password.type(testUserPassword); 
+        await this.submit.click();
+        await page.waitForNavigation();
+        await page.waitForSelector(
+          `p ::-p-text(${testUser.name} is logged on.)`,
+        );
+        await page.waitForSelector("a ::-p-text(view/change the secret");
+        await page.waitForSelector('a[href="/secretWord"]');        
+      });
     });
   });
 };
