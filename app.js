@@ -49,6 +49,9 @@ passportInit();
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Flash messages middleware
+// app.use(flash());
+
 //csrf
 const csrf_options = {
   protected_operations: ["POST"],

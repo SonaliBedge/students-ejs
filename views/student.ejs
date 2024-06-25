@@ -34,19 +34,9 @@
       <option value="<%= subject.SubjectName %>" <%= student && student.Subject === subject.SubjectName ? 'selected' : '' %>><%= subject.SubjectName %></option>
     <% }) %>
   </select><br>
-
-  <!-- <select id="subject" name="Subject">
-    
-    <option value="">Select a subject</option>
-    <option value="English" <%= student && student.Subject === 'English' ? 'selected' : '' %>>English</option>
-    <option value="Mathametics" <%= student && student.Subject === 'Mathametics' ? 'selected' : '' %>>Mathametics</option>
-    <option value="Science" <%= student && student.Subject === 'Science' ? 'selected' : '' %>>Science</option>
-    <option value="History" <%= student && student.Subject === 'History' ? 'selected' : '' %>>History</option>    
-    <option value="Computer" <%= student && student.Subject === 'Computer' ? 'selected' : '' %>>Computer</option>
-    <option value="All" <%= student && student.Subject === 'All' ? 'selected' : '' %>>All</option>
-   
-  </select><br> -->
-
+  
+  <label for="isImmunizationAvailable" style="text-align: left;" >Is Immunization Available:</label>
+  <input type="checkbox" id="isImmunizationAvailable" style="text-align: right;" name="IsImmunizationAvailable" value="true" <% if (student && student.IsImmunizationAvailable) { %>checked<% } %> ></br>
  
   <% if (student) { %>
     <!-- If editing an existing student, include the student's ID in a hidden input field -->

@@ -7,7 +7,25 @@ body {
     padding: 0;
     text-align: center;
 } 
-
+body.dark-mode {
+    background-image: url('../media/dark-office-background-img.jpg');
+    background-color: #333;
+    color: #fff;
+  }
+  a.dark-mode {
+    font-size: larger;
+    color: #fff;
+  }
+  #school-logo-img {
+    position: fixed;
+    top: 10px;
+    left: 30px;
+  }
+  #dark-mode-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+  }
 form {
   background-color: #deeef7;
     max-width: 400px;
@@ -26,7 +44,7 @@ form label {
 
 a {
   font-size: larger;
-  color: #2b06b1;
+  color: #0909ba;
 }
 
 form input[type="text"],

@@ -13,10 +13,14 @@ const TeacherSchema = new mongoose.Schema(
       enum: ["Under Graduation", "Graduation", "Post Graduation"],
       default: "Graduation",
     },
-
+    NoSemesterUnits: {
+      type: Number,
+      require: [true, "Please provide Number of Semester Units"],     
+      default: 0,
+    },
     Subject: {
       type: String,
-      enum: ["English", "Mathametics", "Science", "History", "Computer", "All"],
+      // enum: ["English", "Mathametics", "Science", "History", "Computer", "All"],
       default: "All",
     },
     createdBy: {

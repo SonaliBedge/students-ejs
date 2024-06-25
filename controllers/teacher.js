@@ -19,15 +19,18 @@ const addNewTeacher = (req, res) => {
     action: "/teachers",
     submitButtonLabel: "Add",
     teacher: null,
+    subject: [],
   });
 };
 
 const createNewTeacher = async (req, res) => {
   try {
-    const { TeacherName, TeacherQualification, Subject } = req.body;
+    const { TeacherName, TeacherQualification, NoSemesterUnits, Subject } =
+      req.body;
     const newTeacher = await Teacher.create({
       TeacherName,
-      TeacherQualification,      
+      TeacherQualification,
+      NoSemesterUnits,
       Subject,
       createdBy: req.user._id,
     });
@@ -45,11 +48,16 @@ const getTeacherEntry = async (req, res) => {
       _id: req.params.id,
       createdBy: req.user._id,
     });
+    if (!teacher) {
+      req.flash("error", "Teacher not found.");
+      return res.redirect("/teachers");
+    }
     res.render("teacher", {
       title: "Edit Teacher",
       action: `/teachers/${teacher.id}`,
       submitButtonLabel: "Update",
       teacher: teacher,
+      subject: [],
     });
   } catch (err) {
     req.flash("error", "Error fetching teacher.");
@@ -76,7 +84,14 @@ const updateTeacherEntry = async (req, res) => {
     } else {
       req.flash("error", "Error updating teacher.");
     }
-    res.render("teacher", { teacher: req.body, errors: req.flash("error") });
+    res.render("teacher", {
+      teacher: req.body,
+      errors: req.flash("error"),
+      title: "Edit Teacher",
+      action: `/teachers/${req.params.id}`,
+      submitButtonLabel: "Update",
+      subjects: [], // Pass subjects array or fetch from database
+    });
   }
 };
 

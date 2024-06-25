@@ -4,13 +4,17 @@
 <h2>Students List</h2>
 
     <table id="students-table" class="table"  style="margin: auto; vertical-align: middle;">
+      <thead>
       <tr id="table-header" class="table-header">
-        <th>Student Name</th>
-        <th>School Name</th>
-        <th>Grade</th>
-        <th>Subject</th>
+        <th id="name-header">Student Name</th>
+        <th id="school-header">School Name</th>
+        <th id="grade-header">Grade</th>
+        <th id="subject-header">Subject</th>
+        <th>Is Immunization Available</th>
         <th colspan="2"></th>
       </tr>
+    </thead>
+    <tbody id="students-body">
       <% if (students && students.length) { %>
         <% students.forEach((student) => { %>
           <tr>
@@ -18,6 +22,7 @@
             <td><%= student.SchoolName %></td>
             <td><%= student.Grade %></td>
             <td><%= student.Subject %></td>
+            <td><%= student.IsImmunizationAvailable %></td>
             <td>
               <a href="/students/edit/<%= student.id %>">
                 <button type="button">edit</button>
@@ -27,11 +32,60 @@
                 <button class="custom-button" type="submit">delete</button>
               </form></td>
           </tr>
+        
         <% }) %>
       <% } %>
+    </tbody>
     </table>   
     <br /> 
     <a href="/students/new"><button type="button">Add New</button></a>
     <a href="/">
-      <button type="button">Cancel</button></a>
+      <button type="button">Cancel</button></a>      
+
 <%- include("partials/footer.ejs") %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.table-header th');
+    const tbody = document.getElementById('students-body');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const headerId = header.id;
+
+        // Determine sort direction (ascending or descending)
+        let sortOrder = 1;
+        if (header.dataset.sortOrder === 'asc') {
+          sortOrder = -1;
+          header.dataset.sortOrder = 'desc';
+        } else {
+          header.dataset.sortOrder = 'asc';
+        }
+
+        // Sort rows based on column value
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+          const cellB = rowB.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+
+          // Check if cells exist before accessing textContent
+          const textA = cellA ? cellA.textContent.trim() : '';
+          const textB = cellB ? cellB.textContent.trim() : '';
+
+          if (textA < textB) return -1 * sortOrder;
+          if (textA > textB) return 1 * sortOrder;
+          return 0;
+        });
+
+        // Remove existing rows from tbody
+        tbody.innerHTML = '';
+
+        // Append sorted rows back to tbody
+        rows.forEach(row => {
+          tbody.appendChild(row);
+        });
+      });
+    });
+  });
+</script>
+

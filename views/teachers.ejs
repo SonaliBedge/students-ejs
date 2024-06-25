@@ -4,17 +4,22 @@
 <h2>Teachers List</h2>
 
     <table id="teachers-table" class="table" style="margin: auto; vertical-align: middle;">
-      <tr id="table-header">
-        <th>Teacher Name  </th>
-        <th>Teacher Qualification  </th>        
-        <th>Subject  </th>
+      <thead>
+      <tr id="table-header" class="table-header">
+        <th id="name-header">Teacher Name  </th>
+        <th id="qualification-header">Teacher Qualification  </th>  
+        <th id="noofsemester-header">NoSemesterUnits</th>      
+        <th id="subject-header">Subject </th>
         <th colspan="2"></th>
       </tr>
+    </thead>
+    <tbody id="teachers-body">
       <% if (teachers && teachers.length) { %>
         <% teachers.forEach((teacher) => { %>
           <tr>
             <td><%= teacher.TeacherName %></td>           
             <td><%= teacher.TeacherQualification %></td>
+            <td><%= teacher.NoSemesterUnits %></td>
             <td><%= teacher.Subject %></td>
             <td>
               <a href="/teachers/edit/<%= teacher.id %>">
@@ -27,9 +32,55 @@
           </tr>
         <% }) %>
       <% } %>
+    </tbody>
     </table>    
     <br /> 
     <a href="/teachers/new"><button type="button" >Add New</button></a>
     <a href="/">
       <button type="button">Cancel</button></a>
 <%- include("partials/footer.ejs") %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.table-header th');
+    const tbody = document.getElementById('teachers-body');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const headerId = header.id;
+
+        // Determine sort direction (ascending or descending)
+        let sortOrder = 1;
+        if (header.dataset.sortOrder === 'asc') {
+          sortOrder = -1;
+          header.dataset.sortOrder = 'desc';
+        } else {
+          header.dataset.sortOrder = 'asc';
+        }
+
+        // Sort rows based on column value
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+          const cellB = rowB.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+
+          // Check if cells exist before accessing textContent
+          const textA = cellA ? cellA.textContent.trim() : '';
+          const textB = cellB ? cellB.textContent.trim() : '';
+
+          if (textA < textB) return -1 * sortOrder;
+          if (textA > textB) return 1 * sortOrder;
+          return 0;
+        });
+
+        // Remove existing rows from tbody
+        tbody.innerHTML = '';
+
+        // Append sorted rows back to tbody
+        rows.forEach(row => {
+          tbody.appendChild(row);
+        });
+      });
+    });
+  });
+</script>

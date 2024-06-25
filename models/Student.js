@@ -20,8 +20,12 @@ const StudentSchema = new mongoose.Schema(
     },
     Subject: {
       type: String,
-      enum: ["English", "Mathametics", "Science", "History", "Computer", "All"],
+      // enum: ["English", "Mathametics", "Science", "History", "Computer", "All"],
       default: "All",
+    },
+    IsImmunizationAvailable: {
+      type: Boolean,      
+      default: false,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

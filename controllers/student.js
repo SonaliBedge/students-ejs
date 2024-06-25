@@ -24,12 +24,13 @@ const addNewStudent = (req, res) => {
 
 const createNewStudent = async (req, res) => {
   try {
-    const { StudentName, SchoolName, Grade, Subject } = req.body;
+    const { StudentName, SchoolName, Grade, Subject, IsImmunizationAvailable } = req.body;
     const newStudent = await Student.create({
       StudentName,
       SchoolName,
       Grade,
       Subject,
+      IsImmunizationAvailable : IsImmunizationAvailable === "true",
       createdBy: req.user._id,
     });
     res.redirect("/students"); // Redirect to the students list page or any other page
@@ -68,6 +69,14 @@ const updateStudentEntry = async (req, res) => {
       req.flash("error", "Student not found.");
       return res.redirect("/students");
     }
+    // console.log(req.body.IsImmunizationAvailable)
+    if (req.body.IsImmunizationAvailable === "true") {
+      req.body.IsImmunizationAvailable = true
+    }
+    else {
+      req.body.IsImmunizationAvailable = false
+    }
+    // console.log(req.body)
     Object.assign(student, req.body);
     await student.save();
     res.redirect(`/students`);

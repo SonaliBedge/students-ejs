@@ -9,11 +9,11 @@ const SubjectSchema = new mongoose.Schema(
     },
    
    
-    createdBy: {
-      type: mongoose.Types.ObjectId,
-      ref: "User",
-      require: [true, "Please provide user"],
-    },
+    // createdBy: {
+    //   type: mongoose.Types.ObjectId,
+    //   ref: "User",
+    //   require: [true, "Please provide user"],
+    // },
   },
   { timestamps: true }
 );
