@@ -19,9 +19,8 @@ const StudentSchema = new mongoose.Schema(
       maxlength: 50,
     },
     Subject: {
-      type: String,
-      // enum: ["English", "Mathametics", "Science", "History", "Computer", "All"],
-      default: "All",
+      type: [String],      
+      default: [],
     },
     IsImmunizationAvailable: {
       type: Boolean,      

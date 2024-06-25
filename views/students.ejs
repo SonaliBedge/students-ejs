@@ -8,7 +8,7 @@
       <tr id="table-header" class="table-header">
         <th id="name-header">Student Name</th>
         <th id="school-header">School Name</th>
-        <th id="grade-header">Grade</th>
+        <th id="grade-header">Student Grade</th>
         <th id="subject-header">Subject</th>
         <th>Is Immunization Available</th>
         <th colspan="2"></th>
@@ -21,7 +21,7 @@
             <td><%= student.StudentName %></td>
             <td><%= student.SchoolName %></td>
             <td><%= student.Grade %></td>
-            <td><%= student.Subject %></td>
+            <td><%= student.Subject.join(', ') %></td>
             <td><%= student.IsImmunizationAvailable %></td>
             <td>
               <a href="/students/edit/<%= student.id %>">

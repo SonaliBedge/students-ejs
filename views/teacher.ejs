@@ -17,13 +17,21 @@
   </select><br>
   <label for="noSemesterUnits">Number of Semester Units:</label>
   <input type="text" id="noSemesterUnits" name="NoSemesterUnits" value="<%= teacher ? teacher.NoSemesterUnits : '' %>"><br>
-  <label for="subject">Subject:</label>
+
+  <label>Subjects:</label><br>
+  <% subjects.forEach(subject => { %>
+    <input type="checkbox" id="<%= subject.SubjectName %>" name="Subject" value="<%= subject.SubjectName %>"
+           <% if (teacher && teacher.Subject.includes(subject.SubjectName)) { %> checked <% } %>>
+    <label for="<%= subject.SubjectName %>"><%= subject.SubjectName %></label><br>
+  <% }) %>
+
+  <!-- <label for="subject">Subject:</label>
   <select id="subject" name="Subject">
     <option value="">Select a subject</option>
     <% subjects.forEach(subject => { %>
       <option value="<%= subject.SubjectName %>" <%= teacher && teacher.Subject === subject.SubjectName ? 'selected' : '' %>><%= subject.SubjectName %></option>
     <% }) %>
-  </select><br>  
+  </select><br>   -->
   
   <% if (teacher) { %>
     <!-- If editing an existing teacher, include the teacher's ID in a hidden input field -->

@@ -89,18 +89,20 @@ form button:hover {
 }
 
 .table th {
-    padding: 8px;
+    padding: 10px;
     text-align: left;
     border-bottom: 1px solid #310775;
     background-color: #4caf50;
     color: white;
+    vertical-align: top;
 }
 
 .table td {    
-    padding: 6px;
+    padding: 10px;
     text-align: left;
     border-bottom: 1px solid #4d4949;
     color: #1a0af7;
+    vertical-align: top;
 }  
 
 .table tr {        

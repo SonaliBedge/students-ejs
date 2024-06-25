@@ -19,9 +19,8 @@ const TeacherSchema = new mongoose.Schema(
       default: 0,
     },
     Subject: {
-      type: String,
-      // enum: ["English", "Mathametics", "Science", "History", "Computer", "All"],
-      default: "All",
+      type: [String],      
+      default: [],
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

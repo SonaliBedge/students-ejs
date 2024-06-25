@@ -19,6 +19,7 @@ const addNewStudent = (req, res) => {
     action: "/students",
     submitButtonLabel: "Add",
     student: null,
+    subject: [],
   });
 };
 
@@ -29,7 +30,7 @@ const createNewStudent = async (req, res) => {
       StudentName,
       SchoolName,
       Grade,
-      Subject,
+      Subject: Array.isArray(Subject) ? Subject : [Subject], // Ensure Subjects is always an array           
       IsImmunizationAvailable : IsImmunizationAvailable === "true",
       createdBy: req.user._id,
     });
@@ -52,6 +53,7 @@ const getStudentEntry = async (req, res) => {
       action: `/students/${student.id}`,
       submitButtonLabel: "Update",
       student: student,
+      subject: student.Subject || [],
     });
   } catch (err) {
     req.flash("error", "Error fetching student.");
@@ -69,14 +71,14 @@ const updateStudentEntry = async (req, res) => {
       req.flash("error", "Student not found.");
       return res.redirect("/students");
     }
-    // console.log(req.body.IsImmunizationAvailable)
+    
     if (req.body.IsImmunizationAvailable === "true") {
       req.body.IsImmunizationAvailable = true
     }
     else {
       req.body.IsImmunizationAvailable = false
     }
-    // console.log(req.body)
+    student.Subject = Array.isArray(req.body.Subject) ? req.body.Subject : [req.body.Subject];    
     Object.assign(student, req.body);
     await student.save();
     res.redirect(`/students`);
@@ -86,7 +88,15 @@ const updateStudentEntry = async (req, res) => {
     } else {
       req.flash("error", "Error updating student.");
     }
-    res.render("student", { student: req.body, errors: req.flash("error") });
+    res.render("student", {
+      teacher: req.body,
+      errors: req.flash("error"),
+      title: "Edit Student",
+      action: `/students/${req.params.id}`,
+      submitButtonLabel: "Update",
+      subjects: [], // Pass subjects array or fetch from database
+    });
+    // res.render("student", { student: req.body, errors: req.flash("error") });
   }
 };
 

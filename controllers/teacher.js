@@ -27,13 +27,14 @@ const createNewTeacher = async (req, res) => {
   try {
     const { TeacherName, TeacherQualification, NoSemesterUnits, Subject } =
       req.body;
+      // console.log(req.body)
     const newTeacher = await Teacher.create({
       TeacherName,
       TeacherQualification,
       NoSemesterUnits,
-      Subject,
+      Subject: Array.isArray(Subject) ? Subject : [Subject], // Ensure Subjects is always an array           
       createdBy: req.user._id,
-    });
+    });    
     res.redirect("/teachers"); // Redirect to the teachers list page or any other page
   } catch (err) {
     console.error("Error creating new teacher:", err);
@@ -57,7 +58,7 @@ const getTeacherEntry = async (req, res) => {
       action: `/teachers/${teacher.id}`,
       submitButtonLabel: "Update",
       teacher: teacher,
-      subject: [],
+      subject: teacher.Subject || [],
     });
   } catch (err) {
     req.flash("error", "Error fetching teacher.");
@@ -75,7 +76,9 @@ const updateTeacherEntry = async (req, res) => {
       req.flash("error", "Teacher not found.");
       return res.redirect("/teachers");
     }
-    Object.assign(teacher, req.body);
+    // Ensure Subjects is always an array
+    teacher.Subject = Array.isArray(req.body.Subject) ? req.body.Subject : [req.body.Subject];
+    Object.assign(teacher, req.body);    
     await teacher.save();
     res.redirect(`/teachers`);
   } catch (err) {

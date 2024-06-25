@@ -20,7 +20,7 @@
             <td><%= teacher.TeacherName %></td>           
             <td><%= teacher.TeacherQualification %></td>
             <td><%= teacher.NoSemesterUnits %></td>
-            <td><%= teacher.Subject %></td>
+            <td><%= teacher.Subject.join(', ') %></td>
             <td>
               <a href="/teachers/edit/<%= teacher.id %>">
                 <button type="button">edit</button>
