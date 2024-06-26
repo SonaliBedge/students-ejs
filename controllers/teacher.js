@@ -25,11 +25,12 @@ const addNewTeacher = (req, res) => {
 
 const createNewTeacher = async (req, res) => {
   try {
-    const { TeacherName, TeacherQualification, NoSemesterUnits, Subject } =
+    const { TeacherName, TeacherBirthDate, TeacherQualification, NoSemesterUnits, Subject } =
       req.body;
       // console.log(req.body)
     const newTeacher = await Teacher.create({
       TeacherName,
+      TeacherBirthDate,
       TeacherQualification,
       NoSemesterUnits,
       Subject: Array.isArray(Subject) ? Subject : [Subject], // Ensure Subjects is always an array           
@@ -38,7 +39,7 @@ const createNewTeacher = async (req, res) => {
     res.redirect("/teachers"); // Redirect to the teachers list page or any other page
   } catch (err) {
     console.error("Error creating new teacher:", err);
-    req.flash("error", "Error creating new teacher.");
+    req.flash("error", "Error creating new teacher.");    
     res.redirect("/teachers"); // Redirect to an error page or any other page
   }
 };

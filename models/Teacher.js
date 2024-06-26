@@ -7,6 +7,11 @@ const TeacherSchema = new mongoose.Schema(
       require: [true, "Please provide teacher name"],
       maxlength: 200,
     },
+    TeacherBirthDate: {
+      type: Date,
+      default: Date.now, // Set default value to current date and time
+      required: [true, "Please provide teacher Birth Date"],
+    },
     TeacherQualification: {
       type: String,
       require: [true, "Please provide teacher Qualification"],

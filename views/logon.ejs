@@ -3,12 +3,12 @@
 <form method="POST">
   <div>
     <label name="email">Enter your email:</label>
-    <input name="email" />
+    <input name="email" required/>
   </div>
   <div>
     <label name="password">Enter your password:</label>    
     <input type="hidden" name="_csrf" value="<%= _csrf %>">
-    <input type="password" name="password" />
+    <input type="password" name="password" required/>
   </div>
   <div>
     <button>Logon</button>

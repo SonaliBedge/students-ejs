@@ -25,9 +25,13 @@ const addNewStudent = (req, res) => {
 
 const createNewStudent = async (req, res) => {
   try {
-    const { StudentName, SchoolName, Grade, Subject, IsImmunizationAvailable } = req.body;
+    const { StudentName, StudentAge, SchoolName, Grade, Subject, IsImmunizationAvailable } = req.body;
+    
+    // const subjects = Array.isArray(Subject) ? Subject : [Subject];
+
     const newStudent = await Student.create({
       StudentName,
+      StudentAge,
       SchoolName,
       Grade,
       Subject: Array.isArray(Subject) ? Subject : [Subject], // Ensure Subjects is always an array           
@@ -36,6 +40,20 @@ const createNewStudent = async (req, res) => {
     });
     res.redirect("/students"); // Redirect to the students list page or any other page
   } catch (err) {
+    // if (err.name === "ValidationError") {
+    //   const errors = Object.values(err.errors).map((error) => error.message);
+    //   req.flash("error", errors);
+    // } else {
+    //   req.flash("error", "Error creating new student.");
+    // }
+    // res.render("student", {
+    //   title: "Add Student",
+    //   action: "/students",
+    //   submitButtonLabel: "Add",
+    //   student: req.body,
+    //   subject: subjects,
+    //   errors: req.flash("error"),
+    // });
     console.error("Error creating new student:", err);
     req.flash("error", "Error creating new student.");
     res.redirect("/students"); // Redirect to an error page or any other page

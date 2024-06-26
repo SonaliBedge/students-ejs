@@ -2,6 +2,19 @@
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 <h2>Books List</h2>
+<button type="button" id="btn-Search" onclick="toggleSearch()">Search</button><br>
+<div id="search-container" style="display: none;">
+  
+  <label for="bookName">By Book Name:</label>
+  <input type="text" id="bookName"  oninput="searchBooks()" />
+  
+  <label for="bookType">By Book Type:</label>
+  <select id="bookType" onchange="searchBooks()">
+    <option value="">Select a Book Type</option>
+    <option value="Fiction">Fiction</option>    
+    <option value="Non-fiction">Non-fiction</option>
+  </select>
+</div>
 
     <table id="books-table" class="table" style="margin: auto; vertical-align: middle;">
       <thead>
@@ -39,6 +52,36 @@
 <%- include("partials/footer.ejs") %>
 
 <script>
+
+function toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    if (searchContainer.style.display === 'none') {
+      searchContainer.style.display = 'block';
+    } else {
+      searchContainer.style.display = 'none';
+    }
+  }
+
+  function searchBooks() {
+    const bookName = document.getElementById('bookName').value.toLowerCase();
+    const bookType = document.getElementById('bookType').value.toLowerCase();
+    // console.log(bookType);
+
+    const rows = document.querySelectorAll('#books-body tr');
+
+    rows.forEach(row => {
+      const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+      const btype = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      console.log(btype);
+      // if (name.includes(teacherName) && (qualification === '' || qualification === qual.toLowerCase())) {
+      if (name.includes(bookName) && (bookType === '' || bookType === btype.toLowerCase())) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     const headers = document.querySelectorAll('.table-header th');
     const tbody = document.getElementById('books-body');

@@ -7,6 +7,11 @@ const StudentSchema = new mongoose.Schema(
       require: [true, "Please provide student name"],
       maxlength: 200,
     },
+    StudentAge: {
+      type: Number,
+      require: [true, "Please provide age of student"],     
+      default: 0,
+    },
     SchoolName: {
       type: String,
       require: [true, "Please provide school name"],
@@ -19,8 +24,9 @@ const StudentSchema = new mongoose.Schema(
       maxlength: 50,
     },
     Subject: {
-      type: [String],      
-      default: [],
+      type: [String],   
+      required: [true, "At least one Subject must be selected."],   
+      // default: [],
     },
     IsImmunizationAvailable: {
       type: Boolean,      

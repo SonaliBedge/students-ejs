@@ -2,11 +2,39 @@
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 <h2>Students List</h2>
+<button type="button" id="btn-Search" onclick="toggleSearch()">Search</button><br>
+<div id="search-container" style="display: none;">
 
+  <label for="studentName">By Student Name:</label>
+  <input type="text" id="studentName"  oninput="searchStudents()" />
+
+  <label for="schoolName">By School Name:</label>
+  <input type="text" id="schoolName"  oninput="searchStudents()" /><br>
+
+  <label for="grade">By Grade:</label>
+  <select id="grade" onchange="searchStudents()">      
+      <option value="">Select a grade</option>
+      <option value="Kindergarten">Kindergarten</option>
+      <option value="1 grade">1 grade</option>
+      <option value="2 grade">2 grade</option>
+      <option value="3 grade">3 grade</option>    
+      <option value="4 grade">4 grade</option>
+      <option value="5 grade">5 grade</option>
+      <option value="6 grade">6 grade</option>
+      <option value="7 grade">7 grade</option>
+      <option value="8 grade">8 grade</option>    
+      <option value="9 grade">9 grade</option>
+      <option value="10 grade">10 grade</option>
+      <option value="11 grade">11 grade</option>
+      <option value="12 grade">12 grade</option>    
+    </select>
+
+</div>
     <table id="students-table" class="table"  style="margin: auto; vertical-align: middle;">
       <thead>
       <tr id="table-header" class="table-header">
         <th id="name-header">Student Name</th>
+        <th id="Age-header">Age</th>
         <th id="school-header">School Name</th>
         <th id="grade-header">Student Grade</th>
         <th id="subject-header">Subject</th>
@@ -19,6 +47,7 @@
         <% students.forEach((student) => { %>
           <tr>
             <td><%= student.StudentName %></td>
+            <td><%= student.StudentAge %></td>
             <td><%= student.SchoolName %></td>
             <td><%= student.Grade %></td>
             <td><%= student.Subject.join(', ') %></td>
@@ -45,6 +74,35 @@
 <%- include("partials/footer.ejs") %>
 
 <script>
+   function toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    if (searchContainer.style.display === 'none') {
+      searchContainer.style.display = 'block';
+    } else {
+      searchContainer.style.display = 'none';
+    }
+  }
+
+  function searchStudents() {
+    const studentName = document.getElementById('studentName').value.toLowerCase();
+    const schoolName = document.getElementById('schoolName').value.toLowerCase();
+    const grade = document.getElementById('grade').value.toLowerCase();
+
+    const rows = document.querySelectorAll('#students-body tr');
+
+    rows.forEach(row => {
+      const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+      const schoolN = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      const gradeValue = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+      if (name.includes(studentName) && (schoolName === '' || schoolN.includes(schoolName)) && (grade === '' || gradeValue.includes(grade))) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     const headers = document.querySelectorAll('.table-header th');
     const tbody = document.getElementById('students-body');

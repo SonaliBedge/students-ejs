@@ -21,6 +21,7 @@ const store = new MongoDBStore({
   uri: url,
   collection: "mySessions",
 });
+
 store.on("error", function (error) {
   console.log(error);
 });
@@ -42,6 +43,7 @@ if (app.get("env") === "production") {
 
 // app.use(bodyParser.json());
 app.use(session(sessionParms));
+
 const passport = require("passport");
 const passportInit = require("./passport/passportInit");
 
@@ -49,6 +51,7 @@ passportInit();
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(require("connect-flash")());
 // Flash messages middleware
 // app.use(flash());
 
@@ -63,7 +66,7 @@ const csrf_options = {
 
 const csrf_middleware = csrf(csrf_options);
 
-app.use(require("connect-flash")());
+
 
 app.use(require("./middleware/storeLocals"));
 

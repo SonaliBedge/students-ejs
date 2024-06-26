@@ -8,9 +8,7 @@ const {
   registerDo,
   logoff,
   termsShow,
-  privacyShow,
-  // studentsData,
-  // teachersData,
+  privacyShow, 
 } = require("../controllers/sessionController");
 
 router.route("/register").get(registerShow).post(registerDo);
@@ -30,15 +28,10 @@ router
       // Redirect to the success route
       res.redirect("/");
     }
-    // (req, res) => {
-    //   res.send("Not yet implemented.");
-    // }
+   
   );
 router.route("/logoff").post(logoff);
 router.route("/terms").get(termsShow).post(termsShow);
 router.route("/privacy").get(privacyShow).post(privacyShow);
-// router.route("/students").get(studentsData).post(studentsData);
-// router.route("/teachers").get(teachersData).post(teachersData);
-// termsShow,
-// privacyShow,
+
 module.exports = router;

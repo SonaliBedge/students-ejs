@@ -1,16 +1,26 @@
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 <h2><%= title %></h2>
+<!-- <% if (errors.length > 0) { %>
+  <ul>
+    <% errors.forEach(error => { %>
+      <li><%= error %></li>
+    <% }); %>
+  </ul>
+<% } %> -->
 <form method="POST" action="<%= action %>">
   
   <label for="studentName">Student Name:</label>
-  <input type="text" id="studentName" name="StudentName" value="<%= student ? student.StudentName : '' %>"><br>
+  <input type="text" id="studentName" name="StudentName" value="<%= student ? student.StudentName : '' %>"  required><br>
+
+  <label for="studentAge">Student Age:</label>
+  <input type="text" id="studentAge" name="StudentAge" value="<%= student ? student.StudentAge : '' %>" pattern="[0-9]*" title="Please enter numbers only" required><br>
   
   <label for="schoolName">School Name:</label>
-  <input type="text" id="schoolName" name="SchoolName" value="<%= student ? student.SchoolName : '' %>"><br>
+  <input type="text" id="schoolName" name="SchoolName" value="<%= student ? student.SchoolName : '' %>" required><br>
 
   <label for="grade">Select a Grade:</label>  
-  <select id="grade" name="Grade">    
+  <select id="grade" name="Grade" required>    
     <option value="">Select a grade</option>
     <option value="Kindergarten" <%= student && student.Grade === 'Kindergarten' ? 'selected' : '' %>>Kindergarten</option>
     <option value="1 grade" <%= student && student.Grade === '1 grade' ? 'selected' : '' %>>1 grade</option>
@@ -26,14 +36,18 @@
     <option value="11 grade" <%= student && student.Grade === '11 grade' ? 'selected' : '' %>>11 grade</option>
     <option value="12 grade" <%= student && student.Grade === '12 grade' ? 'selected' : '' %>>12 grade</option>    
   </select><br> 
-
-  <label>Subjects:</label><br>
+  <hr>
+  <label>Choose Subjects:</label><br><hr>
+  <div class="checkbox-container">
   <% subjects.forEach(subject => { %>
+    <div class="checkbox-item">
     <input type="checkbox" id="<%= subject.SubjectName %>" name="Subject" value="<%= subject.SubjectName %>"
            <% if (student && student.Subject.includes(subject.SubjectName)) { %> checked <% } %>>
     <label for="<%= subject.SubjectName %>"><%= subject.SubjectName %></label><br>
+  </div>
   <% }) %>
-
+</div>
+<hr>
   <!-- <label for="subject">Subject:</label>
   <select id="subject" name="Subject">
     <option value="">Select a subject</option>
@@ -41,10 +55,13 @@
       <option value="<%= subject.SubjectName %>" <%= student && student.Subject === subject.SubjectName ? 'selected' : '' %>><%= subject.SubjectName %></option>
     <% }) %>
   </select><br> -->
-  
-  <label for="isImmunizationAvailable" style="text-align: left;" >Is Immunization Available:</label>
-  <input type="checkbox" id="isImmunizationAvailable" style="text-align: right;" name="IsImmunizationAvailable" value="true" <% if (student && student.IsImmunizationAvailable) { %>checked<% } %> ></br>
  
+  <div class="checkbox-container">
+    <div class="checkbox-item">
+  <input type="checkbox" id="isImmunizationAvailable" style="text-align: right;" name="IsImmunizationAvailable" value="true" <% if (student && student.IsImmunizationAvailable) { %>checked<% } %> ></br>
+  <label for="isImmunizationAvailable" style="text-align: left;" >Immunization Available</label>
+    </div>
+  </div><hr>
   <% if (student) { %>
     <!-- If editing an existing student, include the student's ID in a hidden input field -->
     <input type="hidden" name="id" value="<%= student._id %>">

@@ -7,10 +7,16 @@
   
   </form>
 <% } %>
+
 <% if (errors && Array.isArray(errors)) {
   errors.forEach((err) => { %>
     <div>Error: <%= err %></div>
 <% }) } %>
+
+<% if (errors && !Array.isArray(errors)) {  %>
+    <div>Error: <%= errors %></div>
+<% } %>
+
 <% if (info && Array.isArray(info)) {
   info.forEach((msg) => { %>
     <div>Info: <%= msg %></div>

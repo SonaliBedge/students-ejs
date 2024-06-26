@@ -4,7 +4,7 @@
 <form method="POST" action="<%= action %>">
   
   <label for="bookName">Book Name:</label>
-  <input type="text" id="bookName" name="BookName" value="<%= book ? book.BookName : '' %>"><br>
+  <input type="text" id="bookName" name="BookName" value="<%= book ? book.BookName : '' %>" required><br>
 
   <label for="bookauthor">Book Author:</label>
   <input type="text" id="bookauthor" name="BookAuthor" value="<%= book ? book.BookAuthor : '' %>"><br>
