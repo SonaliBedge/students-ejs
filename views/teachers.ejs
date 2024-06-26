@@ -1,0 +1,131 @@
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<h2>Teachers List</h2>
+<button type="button" id="btn-Search" onclick="toggleSearch()">Search</button><br>
+<div id="search-container" style="display: none;">
+  
+  <label for="teacherName">By Teacher Name:</label>
+  <input type="text" id="teacherName"  oninput="searchTeachers()" />
+  
+  <label for="qualification">By Qualification:</label>
+  <select id="qualification" onchange="searchTeachers()">
+    <option value="">Select a Qualification</option>
+    <option value="Under Graduation">Under Graduation</option>
+    <option value="Graduation">Graduation</option>
+    <option value="Post Graduation">Post Graduation</option>
+  </select>
+</div>
+
+<table id="teachers-table" class="table" style="margin: auto; vertical-align: middle;">
+  <thead>
+      <tr id="table-header" class="table-header">
+        <th id="name-header">Teacher Name </th>
+        <th id="birthdate-header">Birth Date </th>
+        <th id="qualification-header">Teacher Qualification  </th>  
+        <th id="noofsemester-header">No. Semester Units</th>      
+        <th id="subject-header">Subject </th>
+        <th colspan="2"></th>
+      </tr>
+  </thead>
+  <tbody id="teachers-body">
+      <% if (teachers && teachers.length) { %>
+        <% teachers.forEach((teacher) => { %>
+          <tr>
+            <td><%= teacher.TeacherName %></td>  
+            <td><%= teacher.TeacherBirthDate ? teacher.TeacherBirthDate.toLocaleDateString() : '' %></td>
+         
+            <!-- <td><%= teacher.TeacherBirthDate.toLocaleDateString() %></td>            -->
+            <td><%= teacher.TeacherQualification %></td>
+            <td><%= teacher.NoSemesterUnits %></td>
+            <td><%= teacher.Subject.join(', ') %></td>
+            <td>
+              <a href="/teachers/edit/<%= teacher.id %>">
+                <button type="button">edit</button>
+              </a>              
+              </td>
+            <td><form class="form-button" method="POST" action="/teachers/delete/<%= teacher.id %>">
+                <button class="custom-button" type="submit">delete</button>
+              </form></td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+    </table>    
+    <br /> 
+    <a href="/teachers/new"><button type="button" >Add New</button></a>
+    <a href="/">
+      <button type="button">Cancel</button></a>
+<%- include("partials/footer.ejs") %>
+
+<script>
+   function toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    if (searchContainer.style.display === 'none') {
+      searchContainer.style.display = 'block';
+    } else {
+      searchContainer.style.display = 'none';
+    }
+  }
+
+  function searchTeachers() {
+    const teacherName = document.getElementById('teacherName').value.toLowerCase();
+    const qualification = document.getElementById('qualification').value.toLowerCase();
+
+    const rows = document.querySelectorAll('#teachers-body tr');
+
+    rows.forEach(row => {
+      const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+      const qual = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+
+      if (name.includes(teacherName) && (qualification === '' || qualification === qual.toLowerCase())) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.table-header th');
+    const tbody = document.getElementById('teachers-body');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const headerId = header.id;
+
+        // Determine sort direction (ascending or descending)
+        let sortOrder = 1;
+        if (header.dataset.sortOrder === 'asc') {
+          sortOrder = -1;
+          header.dataset.sortOrder = 'desc';
+        } else {
+          header.dataset.sortOrder = 'asc';
+        }
+
+        // Sort rows based on column value
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+          const cellB = rowB.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+
+          // Check if cells exist before accessing textContent
+          const textA = cellA ? cellA.textContent.trim() : '';
+          const textB = cellB ? cellB.textContent.trim() : '';
+
+          if (textA < textB) return -1 * sortOrder;
+          if (textA > textB) return 1 * sortOrder;
+          return 0;
+        });
+
+        // Remove existing rows from tbody
+        tbody.innerHTML = '';
+
+        // Append sorted rows back to tbody
+        rows.forEach(row => {
+          tbody.appendChild(row);
+        });
+      });
+    });
+  });
+</script>

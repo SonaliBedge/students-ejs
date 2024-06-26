@@ -1,0 +1,79 @@
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<h2>Subjects List</h2>
+
+    <table id="subjects-table" class="table"  style="margin: auto; vertical-align: middle;">
+      <thead>
+      <tr id="table-header" class="table-header">
+        <th id="name-header">Subject Name</th>        
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody id="subjects-body">
+      <% if (subjects && subjects.length) { %>
+        <% subjects.forEach((subject) => { %>
+          <tr>
+            <td><%= subject.SubjectName %></td>           
+            <td>
+              <a href="/subjects/edit/<%= subject.id %>">
+                <button type="button">edit</button>
+              </a>              
+              </td>
+            <td><form class="form-button" method="POST" action="/subjects/delete/<%= subject.id %>">
+                <button class="custom-button" type="submit">delete</button>
+              </form></td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+    </table>   
+    <br /> 
+    <a href="/subjects/new"><button type="button">Add New</button></a>
+    <a href="/">
+      <button type="button">Cancel</button></a>
+<%- include("partials/footer.ejs") %>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.table-header th');
+    const tbody = document.getElementById('subjects-body');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const headerId = header.id;
+
+        // Determine sort direction (ascending or descending)
+        let sortOrder = 1;
+        if (header.dataset.sortOrder === 'asc') {
+          sortOrder = -1;
+          header.dataset.sortOrder = 'desc';
+        } else {
+          header.dataset.sortOrder = 'asc';
+        }
+
+        // Sort rows based on column value
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+          const cellB = rowB.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+
+          // Check if cells exist before accessing textContent
+          const textA = cellA ? cellA.textContent.trim() : '';
+          const textB = cellB ? cellB.textContent.trim() : '';
+
+          if (textA < textB) return -1 * sortOrder;
+          if (textA > textB) return 1 * sortOrder;
+          return 0;
+        });
+
+        // Remove existing rows from tbody
+        tbody.innerHTML = '';
+
+        // Append sorted rows back to tbody
+        rows.forEach(row => {
+          tbody.appendChild(row);
+        });
+      });
+    });
+  });
+</script>

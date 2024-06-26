@@ -1,0 +1,149 @@
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<h2>Students List</h2>
+<button type="button" id="btn-Search" onclick="toggleSearch()">Search</button><br>
+<div id="search-container" style="display: none;">
+
+  <label for="studentName">By Student Name:</label>
+  <input type="text" id="studentName"  oninput="searchStudents()" />
+
+  <label for="schoolName">By School Name:</label>
+  <input type="text" id="schoolName"  oninput="searchStudents()" /><br>
+
+  <label for="grade">By Grade:</label>
+  <select id="grade" onchange="searchStudents()">      
+      <option value="">Select a grade</option>
+      <option value="Kindergarten">Kindergarten</option>
+      <option value="1 grade">1 grade</option>
+      <option value="2 grade">2 grade</option>
+      <option value="3 grade">3 grade</option>    
+      <option value="4 grade">4 grade</option>
+      <option value="5 grade">5 grade</option>
+      <option value="6 grade">6 grade</option>
+      <option value="7 grade">7 grade</option>
+      <option value="8 grade">8 grade</option>    
+      <option value="9 grade">9 grade</option>
+      <option value="10 grade">10 grade</option>
+      <option value="11 grade">11 grade</option>
+      <option value="12 grade">12 grade</option>    
+    </select>
+
+</div>
+    <table id="students-table" class="table"  style="margin: auto; vertical-align: middle;">
+      <thead>
+      <tr id="table-header" class="table-header">
+        <th id="name-header">Student Name</th>
+        <th id="Age-header">Age</th>
+        <th id="school-header">School Name</th>
+        <th id="grade-header">Student Grade</th>
+        <th id="subject-header">Subject</th>
+        <th>Is Immunization Available</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody id="students-body">
+      <% if (students && students.length) { %>
+        <% students.forEach((student) => { %>
+          <tr>
+            <td><%= student.StudentName %></td>
+            <td><%= student.StudentAge %></td>
+            <td><%= student.SchoolName %></td>
+            <td><%= student.Grade %></td>
+            <td><%= student.Subject.join(', ') %></td>
+            <td><%= student.IsImmunizationAvailable %></td>
+            <td>
+              <a href="/students/edit/<%= student.id %>">
+                <button type="button">edit</button>
+              </a>              
+              </td>
+            <td><form class="form-button" method="POST" action="/students/delete/<%= student.id %>">
+                <button class="custom-button" type="submit">delete</button>
+              </form></td>
+          </tr>
+        
+        <% }) %>
+      <% } %>
+    </tbody>
+    </table>   
+    <br /> 
+    <a href="/students/new"><button type="button">Add New</button></a>
+    <a href="/">
+      <button type="button">Cancel</button></a>      
+
+<%- include("partials/footer.ejs") %>
+
+<script>
+   function toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    if (searchContainer.style.display === 'none') {
+      searchContainer.style.display = 'block';
+    } else {
+      searchContainer.style.display = 'none';
+    }
+  }
+
+  function searchStudents() {
+    const studentName = document.getElementById('studentName').value.toLowerCase();
+    const schoolName = document.getElementById('schoolName').value.toLowerCase();
+    const grade = document.getElementById('grade').value.toLowerCase();
+
+    const rows = document.querySelectorAll('#students-body tr');
+
+    rows.forEach(row => {
+      const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+      const schoolN = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      const gradeValue = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+      if (name.includes(studentName) && (schoolName === '' || schoolN.includes(schoolName)) && (grade === '' || gradeValue.includes(grade))) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.table-header th');
+    const tbody = document.getElementById('students-body');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const headerId = header.id;
+
+        // Determine sort direction (ascending or descending)
+        let sortOrder = 1;
+        if (header.dataset.sortOrder === 'asc') {
+          sortOrder = -1;
+          header.dataset.sortOrder = 'desc';
+        } else {
+          header.dataset.sortOrder = 'asc';
+        }
+
+        // Sort rows based on column value
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+          const cellB = rowB.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+
+          // Check if cells exist before accessing textContent
+          const textA = cellA ? cellA.textContent.trim() : '';
+          const textB = cellB ? cellB.textContent.trim() : '';
+
+          if (textA < textB) return -1 * sortOrder;
+          if (textA > textB) return 1 * sortOrder;
+          return 0;
+        });
+
+        // Remove existing rows from tbody
+        tbody.innerHTML = '';
+
+        // Append sorted rows back to tbody
+        rows.forEach(row => {
+          tbody.appendChild(row);
+        });
+      });
+    });
+  });
+</script>
+

@@ -2,6 +2,16 @@ const mongoose = require("mongoose");
 
 const StudentSchema = new mongoose.Schema(
   {
+    StudentName: {
+      type: String,
+      require: [true, "Please provide student name"],
+      maxlength: 200,
+    },
+    StudentAge: {
+      type: Number,
+      require: [true, "Please provide age of student"],     
+      default: 0,
+    },
     SchoolName: {
       type: String,
       require: [true, "Please provide school name"],
@@ -10,18 +20,17 @@ const StudentSchema = new mongoose.Schema(
     Grade: {
       type: String,
       require: [true, "Please provide grade level"],
+      enum: ["Kindergarten","1 grade", "2 grade", "3 grade", "4 grade", "5 grade", "6 grade","7 grade","8 grade","9 grade","10 grade","11 grade","12 grade"],
       maxlength: 50,
     },
-    // Grade: {
-    //     type: Number,
-    //     require: [true, "Please provide grade level"],
-    // enum = ['1','2','3','4','5','6','7','8']
-    //     maxlength: 2,
-    //   },
     Subject: {
-      type: String,
-      enum: ["English", "Mathametics", "Science", "History", "Computer","All"],
-      default: "All",
+      type: [String],   
+      required: [true, "At least one Subject must be selected."],   
+      // default: [],
+    },
+    IsImmunizationAvailable: {
+      type: Boolean,      
+      default: false,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

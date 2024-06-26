@@ -1,0 +1,127 @@
+
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+<h2>Books List</h2>
+<button type="button" id="btn-Search" onclick="toggleSearch()">Search</button><br>
+<div id="search-container" style="display: none;">
+  
+  <label for="bookName">By Book Name:</label>
+  <input type="text" id="bookName"  oninput="searchBooks()" />
+  
+  <label for="bookType">By Book Type:</label>
+  <select id="bookType" onchange="searchBooks()">
+    <option value="">Select a Book Type</option>
+    <option value="Fiction">Fiction</option>    
+    <option value="Non-fiction">Non-fiction</option>
+  </select>
+</div>
+
+    <table id="books-table" class="table" style="margin: auto; vertical-align: middle;">
+      <thead>
+        <tr id="table-header" class="table-header">
+        <th id="name-header">Book Name  </th>
+        <th id="author-header">Book Author  </th>        
+        <th>Book Type  </th>
+        <th colspan="2"></th>
+      </tr>
+      </thead>
+      <tbody id="books-body">
+      <% if (books && books.length) { %>
+        <% books.forEach((book) => { %>
+          <tr>
+            <td><%= book.BookName %></td>            
+            <td><%= book.BookAuthor %></td>
+            <td><%= book.BookType %></td>
+            <td>
+              <a href="/books/edit/<%= book.id %>">
+                <button type="button">edit</button>
+              </a>              
+              </td>
+            <td><form class="form-button" method="POST" action="/books/delete/<%= book.id %>">
+                <button class="custom-button" type="submit">delete</button>
+              </form></td>
+          </tr>
+        <% }) %>
+      <% } %>
+      </tbody>
+    </table>    
+    <br /> 
+    <a href="/books/new"><button type="button" >Add New</button></a>
+    <a href="/">
+      <button type="button">Cancel</button></a>
+<%- include("partials/footer.ejs") %>
+
+<script>
+
+function toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    if (searchContainer.style.display === 'none') {
+      searchContainer.style.display = 'block';
+    } else {
+      searchContainer.style.display = 'none';
+    }
+  }
+
+  function searchBooks() {
+    const bookName = document.getElementById('bookName').value.toLowerCase();
+    const bookType = document.getElementById('bookType').value.toLowerCase();
+    // console.log(bookType);
+
+    const rows = document.querySelectorAll('#books-body tr');
+
+    rows.forEach(row => {
+      const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+      const btype = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      console.log(btype);
+      // if (name.includes(teacherName) && (qualification === '' || qualification === qual.toLowerCase())) {
+      if (name.includes(bookName) && (bookType === '' || bookType === btype.toLowerCase())) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.table-header th');
+    const tbody = document.getElementById('books-body');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const headerId = header.id;
+
+        // Determine sort direction (ascending or descending)
+        let sortOrder = 1;
+        if (header.dataset.sortOrder === 'asc') {
+          sortOrder = -1;
+          header.dataset.sortOrder = 'desc';
+        } else {
+          header.dataset.sortOrder = 'asc';
+        }
+
+        // Sort rows based on column value
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+          const cellB = rowB.querySelector(`td:nth-child(${header.cellIndex + 1})`);
+
+          // Check if cells exist before accessing textContent
+          const textA = cellA ? cellA.textContent.trim() : '';
+          const textB = cellB ? cellB.textContent.trim() : '';
+
+          if (textA < textB) return -1 * sortOrder;
+          if (textA > textB) return 1 * sortOrder;
+          return 0;
+        });
+
+        // Remove existing rows from tbody
+        tbody.innerHTML = '';
+
+        // Append sorted rows back to tbody
+        rows.forEach(row => {
+          tbody.appendChild(row);
+        });
+      });
+    });
+  });
+</script>
