@@ -271,9 +271,11 @@ describe("tests for CRUD operations", function () {
     
     const dataToPost = {
       StudentName: this.student.StudentName,
+      StudentAge: this.student.StudentAge,
       SchoolName: this.student.SchoolName,
       Grade: this.student.Grade,
       Subject: this.student.Subject,
+      IsImmunizationAvailable: this.student.IsImmunizationAvailable,
       _csrf: this.csrfToken,
     };
     const request = await chai.request
@@ -288,9 +290,11 @@ describe("tests for CRUD operations", function () {
 
     const addedStudent = await Student.findOne({
       StudentName: this.student.StudentName,
+      StudentAge: this.student.StudentAge,
       SchoolName: this.student.SchoolName,
       Grade: this.student.Grade,
       Subject: this.student.Subject,
+      IsImmunizationAvailable: this.student.IsImmunizationAvailable,
     });
     // console.log(addedStudent)
     expect(addedStudent).to.not.be.null;
